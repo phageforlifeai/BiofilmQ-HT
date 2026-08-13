@@ -1,0 +1,578 @@
+{
+  "A1": {
+    "type": "strain",
+    "name": "CB-1",
+    "rep": 1,
+    "media": "Default"
+  },
+  "A2": {
+    "type": "strain",
+    "name": "CB-1",
+    "rep": 2,
+    "media": "Default"
+  },
+  "A3": {
+    "type": "strain",
+    "name": "CB-1",
+    "rep": 3,
+    "media": "Default"
+  },
+  "A4": {
+    "type": "strain",
+    "name": "CB-1",
+    "rep": 4,
+    "media": "Default"
+  },
+  "A5": {
+    "type": "strain",
+    "name": "CB-2",
+    "rep": 1,
+    "media": "Default"
+  },
+  "A6": {
+    "type": "strain",
+    "name": "CB-2",
+    "rep": 2,
+    "media": "Default"
+  },
+  "A7": {
+    "type": "strain",
+    "name": "CB-2",
+    "rep": 3,
+    "media": "Default"
+  },
+  "A8": {
+    "type": "strain",
+    "name": "CB-2",
+    "rep": 4,
+    "media": "Default"
+  },
+  "A9": {
+    "type": "strain",
+    "name": "CB-3",
+    "rep": 1,
+    "media": "Default"
+  },
+  "A10": {
+    "type": "strain",
+    "name": "CB-3",
+    "rep": 2,
+    "media": "Default"
+  },
+  "A11": {
+    "type": "strain",
+    "name": "CB-3",
+    "rep": 3,
+    "media": "Default"
+  },
+  "A12": {
+    "type": "strain",
+    "name": "CB-3",
+    "rep": 4,
+    "media": "Default"
+  },
+  "B1": {
+    "type": "strain",
+    "name": "CB-4",
+    "rep": 1,
+    "media": "Default"
+  },
+  "B3": {
+    "type": "strain",
+    "name": "CB-4",
+    "rep": 2,
+    "media": "Default"
+  },
+  "B2": {
+    "type": "strain",
+    "name": "CB-4",
+    "rep": 3,
+    "media": "Default"
+  },
+  "B4": {
+    "type": "strain",
+    "name": "CB-4",
+    "rep": 4,
+    "media": "Default"
+  },
+  "B5": {
+    "type": "strain",
+    "name": "CB-5",
+    "rep": 1,
+    "media": "Default"
+  },
+  "B6": {
+    "type": "strain",
+    "name": "CB-5",
+    "rep": 2,
+    "media": "Default"
+  },
+  "B7": {
+    "type": "strain",
+    "name": "CB-5",
+    "rep": 3,
+    "media": "Default"
+  },
+  "B8": {
+    "type": "strain",
+    "name": "CB-5",
+    "rep": 4,
+    "media": "Default"
+  },
+  "B9": {
+    "type": "strain",
+    "name": "CB-6",
+    "rep": 1,
+    "media": "Default"
+  },
+  "B10": {
+    "type": "strain",
+    "name": "CB-6",
+    "rep": 2,
+    "media": "Default"
+  },
+  "B11": {
+    "type": "strain",
+    "name": "CB-6",
+    "rep": 3,
+    "media": "Default"
+  },
+  "B12": {
+    "type": "strain",
+    "name": "CB-6",
+    "rep": 4,
+    "media": "Default"
+  },
+  "C1": {
+    "type": "strain",
+    "name": "CB-7",
+    "rep": 1,
+    "media": "Default"
+  },
+  "C2": {
+    "type": "strain",
+    "name": "CB-7",
+    "rep": 2,
+    "media": "Default"
+  },
+  "C3": {
+    "type": "strain",
+    "name": "CB-7",
+    "rep": 3,
+    "media": "Default"
+  },
+  "C4": {
+    "type": "strain",
+    "name": "CB-7",
+    "rep": 4,
+    "media": "Default"
+  },
+  "C5": {
+    "type": "strain",
+    "name": "CB-8",
+    "rep": 1,
+    "media": "Default"
+  },
+  "C6": {
+    "type": "strain",
+    "name": "CB-8",
+    "rep": 2,
+    "media": "Default"
+  },
+  "C7": {
+    "type": "strain",
+    "name": "CB-8",
+    "rep": 3,
+    "media": "Default"
+  },
+  "C8": {
+    "type": "strain",
+    "name": "CB-8",
+    "rep": 4,
+    "media": "Default"
+  },
+  "C9": {
+    "type": "strain",
+    "name": "CB-9",
+    "rep": 1,
+    "media": "Default"
+  },
+  "C10": {
+    "type": "strain",
+    "name": "CB-9",
+    "rep": 2,
+    "media": "Default"
+  },
+  "C11": {
+    "type": "strain",
+    "name": "CB-9",
+    "rep": 3,
+    "media": "Default"
+  },
+  "C12": {
+    "type": "strain",
+    "name": "CB-9",
+    "rep": 4,
+    "media": "Default"
+  },
+  "D1": {
+    "type": "strain",
+    "name": "CB-10",
+    "rep": 1,
+    "media": "Default"
+  },
+  "D2": {
+    "type": "strain",
+    "name": "CB-10",
+    "rep": 2,
+    "media": "Default"
+  },
+  "D3": {
+    "type": "strain",
+    "name": "CB-10",
+    "rep": 3,
+    "media": "Default"
+  },
+  "D4": {
+    "type": "strain",
+    "name": "CB-10",
+    "rep": 4,
+    "media": "Default"
+  },
+  "D5": {
+    "type": "strain",
+    "name": "CB-11",
+    "rep": 1,
+    "media": "Default"
+  },
+  "D6": {
+    "type": "strain",
+    "name": "CB-11",
+    "rep": 2,
+    "media": "Default"
+  },
+  "D7": {
+    "type": "strain",
+    "name": "CB-11",
+    "rep": 3,
+    "media": "Default"
+  },
+  "D8": {
+    "type": "strain",
+    "name": "CB-11",
+    "rep": 4,
+    "media": "Default"
+  },
+  "D9": {
+    "type": "strain",
+    "name": "CB-12",
+    "rep": 1,
+    "media": "Default"
+  },
+  "D10": {
+    "type": "strain",
+    "name": "CB-12",
+    "rep": 2,
+    "media": "Default"
+  },
+  "D11": {
+    "type": "strain",
+    "name": "CB-12",
+    "rep": 3,
+    "media": "Default"
+  },
+  "D12": {
+    "type": "strain",
+    "name": "CB-12",
+    "rep": 4,
+    "media": "Default"
+  },
+  "E1": {
+    "type": "strain",
+    "name": "CB-13",
+    "rep": 1,
+    "media": "Default"
+  },
+  "E2": {
+    "type": "strain",
+    "name": "CB-13",
+    "rep": 2,
+    "media": "Default"
+  },
+  "E3": {
+    "type": "strain",
+    "name": "CB-13",
+    "rep": 3,
+    "media": "Default"
+  },
+  "E4": {
+    "type": "strain",
+    "name": "CB-13",
+    "rep": 4,
+    "media": "Default"
+  },
+  "E6": {
+    "type": "strain",
+    "name": "CB-14",
+    "rep": 1,
+    "media": "Default"
+  },
+  "E5": {
+    "type": "strain",
+    "name": "CB-14",
+    "rep": 2,
+    "media": "Default"
+  },
+  "E7": {
+    "type": "strain",
+    "name": "CB-14",
+    "rep": 3,
+    "media": "Default"
+  },
+  "E8": {
+    "type": "strain",
+    "name": "CB-14",
+    "rep": 4,
+    "media": "Default"
+  },
+  "E9": {
+    "type": "strain",
+    "name": "CB-15",
+    "rep": 1,
+    "media": "Default"
+  },
+  "E11": {
+    "type": "strain",
+    "name": "CB-15",
+    "rep": 2,
+    "media": "Default"
+  },
+  "E10": {
+    "type": "strain",
+    "name": "CB-15",
+    "rep": 3,
+    "media": "Default"
+  },
+  "E12": {
+    "type": "strain",
+    "name": "CB-15",
+    "rep": 4,
+    "media": "Default"
+  },
+  "F1": {
+    "type": "strain",
+    "name": "CB-16",
+    "rep": 1,
+    "media": "Default"
+  },
+  "F2": {
+    "type": "strain",
+    "name": "CB-16",
+    "rep": 2,
+    "media": "Default"
+  },
+  "F3": {
+    "type": "strain",
+    "name": "CB-16",
+    "rep": 3,
+    "media": "Default"
+  },
+  "F4": {
+    "type": "strain",
+    "name": "CB-16",
+    "rep": 4,
+    "media": "Default"
+  },
+  "F5": {
+    "type": "strain",
+    "name": "FRP 1",
+    "rep": 1,
+    "media": "Default"
+  },
+  "F6": {
+    "type": "strain",
+    "name": "FRP 1",
+    "rep": 2,
+    "media": "Default"
+  },
+  "F7": {
+    "type": "strain",
+    "name": "FRP 1",
+    "rep": 3,
+    "media": "Default"
+  },
+  "F8": {
+    "type": "strain",
+    "name": "FRP 1",
+    "rep": 4,
+    "media": "Default"
+  },
+  "F9": {
+    "type": "strain",
+    "name": "CuNi 1",
+    "rep": 1,
+    "media": "Default"
+  },
+  "F10": {
+    "type": "strain",
+    "name": "CuNi 1",
+    "rep": 2,
+    "media": "Default"
+  },
+  "F11": {
+    "type": "strain",
+    "name": "CuNi 1",
+    "rep": 3,
+    "media": "Default"
+  },
+  "F12": {
+    "type": "strain",
+    "name": "CuNi 1",
+    "rep": 4,
+    "media": "Default"
+  },
+  "G1": {
+    "type": "strain",
+    "name": "CuNi 2",
+    "rep": 1,
+    "media": "Default"
+  },
+  "G2": {
+    "type": "strain",
+    "name": "CuNi 2",
+    "rep": 2,
+    "media": "Default"
+  },
+  "G3": {
+    "type": "strain",
+    "name": "CuNi 2",
+    "rep": 3,
+    "media": "Default"
+  },
+  "G4": {
+    "type": "strain",
+    "name": "CuNi 2",
+    "rep": 4,
+    "media": "Default"
+  },
+  "G5": {
+    "type": "strain",
+    "name": "Ti 1",
+    "rep": 1,
+    "media": "Default"
+  },
+  "G6": {
+    "type": "strain",
+    "name": "Ti 1",
+    "rep": 2,
+    "media": "Default"
+  },
+  "G7": {
+    "type": "strain",
+    "name": "Ti 1",
+    "rep": 3,
+    "media": "Default"
+  },
+  "G8": {
+    "type": "strain",
+    "name": "Ti 1",
+    "rep": 4,
+    "media": "Default"
+  },
+  "G9": {
+    "type": "strain",
+    "name": "SS 1",
+    "rep": 1,
+    "media": "Default"
+  },
+  "G10": {
+    "type": "strain",
+    "name": "SS 1",
+    "rep": 2,
+    "media": "Default"
+  },
+  "G11": {
+    "type": "strain",
+    "name": "SS 1",
+    "rep": 3,
+    "media": "Default"
+  },
+  "G12": {
+    "type": "strain",
+    "name": "SS 1",
+    "rep": 4,
+    "media": "Default"
+  },
+  "H1": {
+    "type": "strain",
+    "name": "FRC 1",
+    "rep": 1,
+    "media": "Default"
+  },
+  "H2": {
+    "type": "strain",
+    "name": "FRC 1",
+    "rep": 2,
+    "media": "Default"
+  },
+  "H3": {
+    "type": "strain",
+    "name": "FRC 1",
+    "rep": 3,
+    "media": "Default"
+  },
+  "H4": {
+    "type": "strain",
+    "name": "FRC 1",
+    "rep": 4,
+    "media": "Default"
+  },
+  "H5": {
+    "type": "strain",
+    "name": "AlBr 1",
+    "rep": 1,
+    "media": "Default"
+  },
+  "H6": {
+    "type": "strain",
+    "name": "AlBr 1",
+    "rep": 2,
+    "media": "Default"
+  },
+  "H7": {
+    "type": "strain",
+    "name": "AlBr 1",
+    "rep": 3,
+    "media": "Default"
+  },
+  "H8": {
+    "type": "strain",
+    "name": "AlBr 1",
+    "rep": 4,
+    "media": "Default"
+  },
+  "H9": {
+    "type": "blank",
+    "name": "",
+    "rep": 1,
+    "media": "Default"
+  },
+  "H10": {
+    "type": "blank",
+    "name": "",
+    "rep": 2,
+    "media": "Default"
+  },
+  "H11": {
+    "type": "blank",
+    "name": "",
+    "rep": 3,
+    "media": "Default"
+  },
+  "H12": {
+    "type": "blank",
+    "name": "",
+    "rep": 4,
+    "media": "Default"
+  }
+}
