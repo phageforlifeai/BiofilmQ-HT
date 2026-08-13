@@ -1,0 +1,578 @@
+{
+  "A1": {
+    "type": "pos",
+    "name": "K. pneumoniae",
+    "rep": 1,
+    "media": "Default"
+  },
+  "A2": {
+    "type": "pos",
+    "name": "K. pneumoniae",
+    "rep": 2,
+    "media": "Default"
+  },
+  "A3": {
+    "type": "pos",
+    "name": "K. pneumoniae",
+    "rep": 3,
+    "media": "Default"
+  },
+  "A4": {
+    "type": "strain",
+    "name": "Phage 1",
+    "rep": 1,
+    "media": "Default"
+  },
+  "A5": {
+    "type": "strain",
+    "name": "Phage 1",
+    "rep": 2,
+    "media": "Default"
+  },
+  "A6": {
+    "type": "strain",
+    "name": "Phage 1",
+    "rep": 3,
+    "media": "Default"
+  },
+  "A7": {
+    "type": "strain",
+    "name": "Phage 6",
+    "rep": 1,
+    "media": "Default"
+  },
+  "A8": {
+    "type": "strain",
+    "name": "Phage 6",
+    "rep": 2,
+    "media": "Default"
+  },
+  "A9": {
+    "type": "strain",
+    "name": "Phage 6",
+    "rep": 3,
+    "media": "Default"
+  },
+  "A10": {
+    "type": "strain",
+    "name": "Phage 8",
+    "rep": 1,
+    "media": "Default"
+  },
+  "A11": {
+    "type": "strain",
+    "name": "Phage 8",
+    "rep": 2,
+    "media": "Default"
+  },
+  "A12": {
+    "type": "strain",
+    "name": "Phage 8",
+    "rep": 3,
+    "media": "Default"
+  },
+  "B1": {
+    "type": "strain",
+    "name": "Phage 3",
+    "rep": 1,
+    "media": "Default"
+  },
+  "B2": {
+    "type": "strain",
+    "name": "Phage 3",
+    "rep": 2,
+    "media": "Default"
+  },
+  "B3": {
+    "type": "strain",
+    "name": "Phage 3",
+    "rep": 3,
+    "media": "Default"
+  },
+  "B4": {
+    "type": "strain",
+    "name": "Amp-50",
+    "rep": 1,
+    "media": "Default"
+  },
+  "B5": {
+    "type": "strain",
+    "name": "Amp-50",
+    "rep": 2,
+    "media": "Default"
+  },
+  "B6": {
+    "type": "strain",
+    "name": "Amp-50",
+    "rep": 3,
+    "media": "Default"
+  },
+  "B7": {
+    "type": "strain",
+    "name": "Amp-300",
+    "rep": 1,
+    "media": "Default"
+  },
+  "B8": {
+    "type": "strain",
+    "name": "Amp-300",
+    "rep": 2,
+    "media": "Default"
+  },
+  "B9": {
+    "type": "strain",
+    "name": "Amp-300",
+    "rep": 3,
+    "media": "Default"
+  },
+  "B10": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 1",
+    "rep": 1,
+    "media": "Default"
+  },
+  "B11": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 1",
+    "rep": 2,
+    "media": "Default"
+  },
+  "B12": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 1",
+    "rep": 3,
+    "media": "Default"
+  },
+  "C1": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 6",
+    "rep": 1,
+    "media": "Default"
+  },
+  "C2": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 6",
+    "rep": 2,
+    "media": "Default"
+  },
+  "C3": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 6",
+    "rep": 3,
+    "media": "Default"
+  },
+  "C4": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 8",
+    "rep": 1,
+    "media": "Default"
+  },
+  "C5": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 8",
+    "rep": 2,
+    "media": "Default"
+  },
+  "C6": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 8",
+    "rep": 3,
+    "media": "Default"
+  },
+  "C7": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 3",
+    "rep": 1,
+    "media": "Default"
+  },
+  "C8": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 3",
+    "rep": 2,
+    "media": "Default"
+  },
+  "C9": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 3",
+    "rep": 3,
+    "media": "Default"
+  },
+  "C10": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 1",
+    "rep": 1,
+    "media": "Default"
+  },
+  "C11": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 1",
+    "rep": 2,
+    "media": "Default"
+  },
+  "C12": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 1",
+    "rep": 3,
+    "media": "Default"
+  },
+  "D1": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 6",
+    "rep": 1,
+    "media": "Default"
+  },
+  "D2": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 6",
+    "rep": 2,
+    "media": "Default"
+  },
+  "D3": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 6",
+    "rep": 3,
+    "media": "Default"
+  },
+  "D4": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 8",
+    "rep": 1,
+    "media": "Default"
+  },
+  "D5": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 8",
+    "rep": 2,
+    "media": "Default"
+  },
+  "D6": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 8",
+    "rep": 3,
+    "media": "Default"
+  },
+  "D7": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 3",
+    "rep": 1,
+    "media": "Default"
+  },
+  "D8": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 3",
+    "rep": 2,
+    "media": "Default"
+  },
+  "D9": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 3",
+    "rep": 3,
+    "media": "Default"
+  },
+  "D10": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 1 & 6",
+    "rep": 1,
+    "media": "Default"
+  },
+  "D11": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 1 & 6",
+    "rep": 2,
+    "media": "Default"
+  },
+  "D12": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 1 & 6",
+    "rep": 3,
+    "media": "Default"
+  },
+  "E1": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 1, 6, & 3",
+    "rep": 1,
+    "media": "Default"
+  },
+  "E2": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 1, 6, & 3",
+    "rep": 2,
+    "media": "Default"
+  },
+  "E3": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 1, 6, & 3",
+    "rep": 3,
+    "media": "Default"
+  },
+  "E4": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 1, 6, 8, & 3",
+    "rep": 1,
+    "media": "Default"
+  },
+  "E5": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 1, 6, 8, & 3",
+    "rep": 2,
+    "media": "Default"
+  },
+  "E6": {
+    "type": "strain",
+    "name": "Amp-50 + Phage 1, 6, 8, & 3",
+    "rep": 3,
+    "media": "Default"
+  },
+  "E7": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 1 & 6",
+    "rep": 1,
+    "media": "Default"
+  },
+  "E8": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 1 & 6",
+    "rep": 2,
+    "media": "Default"
+  },
+  "E9": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 1 & 6",
+    "rep": 3,
+    "media": "Default"
+  },
+  "E10": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 1, 6, & 3",
+    "rep": 1,
+    "media": "Default"
+  },
+  "E11": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 1, 6, & 3",
+    "rep": 2,
+    "media": "Default"
+  },
+  "E12": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 1, 6, & 3",
+    "rep": 3,
+    "media": "Default"
+  },
+  "F1": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 1, 6, 8, & 3",
+    "rep": 1,
+    "media": "Default"
+  },
+  "F2": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 1, 6, 8, & 3",
+    "rep": 2,
+    "media": "Default"
+  },
+  "F3": {
+    "type": "strain",
+    "name": "Amp-300 + Phage 1, 6, 8, & 3",
+    "rep": 3,
+    "media": "Default"
+  },
+  "F4": {
+    "type": "blank",
+    "name": "",
+    "rep": 1,
+    "media": "Default"
+  },
+  "F5": {
+    "type": "blank",
+    "name": "",
+    "rep": 2,
+    "media": "Default"
+  },
+  "F6": {
+    "type": "blank",
+    "name": "",
+    "rep": 3,
+    "media": "Default"
+  },
+  "F7": {
+    "type": "empty",
+    "name": "",
+    "rep": 1,
+    "media": "Default"
+  },
+  "F8": {
+    "type": "empty",
+    "name": "",
+    "rep": 2,
+    "media": "Default"
+  },
+  "F9": {
+    "type": "empty",
+    "name": "",
+    "rep": 3,
+    "media": "Default"
+  },
+  "F10": {
+    "type": "empty",
+    "name": "",
+    "rep": 4,
+    "media": "Default"
+  },
+  "F11": {
+    "type": "empty",
+    "name": "",
+    "rep": 5,
+    "media": "Default"
+  },
+  "F12": {
+    "type": "empty",
+    "name": "",
+    "rep": 6,
+    "media": "Default"
+  },
+  "G1": {
+    "type": "empty",
+    "name": "",
+    "rep": 7,
+    "media": "Default"
+  },
+  "G2": {
+    "type": "empty",
+    "name": "",
+    "rep": 8,
+    "media": "Default"
+  },
+  "G3": {
+    "type": "empty",
+    "name": "",
+    "rep": 9,
+    "media": "Default"
+  },
+  "G4": {
+    "type": "empty",
+    "name": "",
+    "rep": 10,
+    "media": "Default"
+  },
+  "G5": {
+    "type": "empty",
+    "name": "",
+    "rep": 11,
+    "media": "Default"
+  },
+  "G6": {
+    "type": "empty",
+    "name": "",
+    "rep": 12,
+    "media": "Default"
+  },
+  "G7": {
+    "type": "empty",
+    "name": "",
+    "rep": 13,
+    "media": "Default"
+  },
+  "G8": {
+    "type": "empty",
+    "name": "",
+    "rep": 14,
+    "media": "Default"
+  },
+  "G9": {
+    "type": "empty",
+    "name": "",
+    "rep": 15,
+    "media": "Default"
+  },
+  "G10": {
+    "type": "empty",
+    "name": "",
+    "rep": 16,
+    "media": "Default"
+  },
+  "G11": {
+    "type": "empty",
+    "name": "",
+    "rep": 17,
+    "media": "Default"
+  },
+  "G12": {
+    "type": "empty",
+    "name": "",
+    "rep": 18,
+    "media": "Default"
+  },
+  "H12": {
+    "type": "empty",
+    "name": "",
+    "rep": 19,
+    "media": "Default"
+  },
+  "H11": {
+    "type": "empty",
+    "name": "",
+    "rep": 20,
+    "media": "Default"
+  },
+  "H10": {
+    "type": "empty",
+    "name": "",
+    "rep": 21,
+    "media": "Default"
+  },
+  "H9": {
+    "type": "empty",
+    "name": "",
+    "rep": 22,
+    "media": "Default"
+  },
+  "H8": {
+    "type": "empty",
+    "name": "",
+    "rep": 23,
+    "media": "Default"
+  },
+  "H7": {
+    "type": "empty",
+    "name": "",
+    "rep": 24,
+    "media": "Default"
+  },
+  "H6": {
+    "type": "empty",
+    "name": "",
+    "rep": 25,
+    "media": "Default"
+  },
+  "H5": {
+    "type": "empty",
+    "name": "",
+    "rep": 30,
+    "media": "Default"
+  },
+  "H4": {
+    "type": "empty",
+    "name": "",
+    "rep": 26,
+    "media": "Default"
+  },
+  "H3": {
+    "type": "empty",
+    "name": "",
+    "rep": 29,
+    "media": "Default"
+  },
+  "H2": {
+    "type": "empty",
+    "name": "",
+    "rep": 27,
+    "media": "Default"
+  },
+  "H1": {
+    "type": "empty",
+    "name": "",
+    "rep": 28,
+    "media": "Default"
+  }
+}
