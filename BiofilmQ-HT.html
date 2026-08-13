@@ -1,0 +1,2132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BiofilmQ-HT</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #eef1f8;
+    --surface: #ffffff;
+    --surface2: #f5f7fb;
+    --surface3: #e8ecf5;
+    --border: #dde2ee;
+    --border2: #c4cade;
+    --text: #111827;
+    --text2: #4b5563;
+    --text3: #9ca3af;
+    --accent: #1d4ed8;
+    --accent-light: #dbeafe;
+    --accent-glow: rgba(29,78,216,.10);
+    --accent2: #1e40af;
+    --green: #059669;
+    --green-bg: #d1fae5;
+    --orange: #d97706;
+    --orange-bg: #fef3c7;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+    --teal: #0891b2;
+    --teal-bg: #e0f2fe;
+    --pink: #be185d;
+    --pink-bg: #fce7f3;
+    --radius: 8px;
+    --radius-lg: 14px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.07);
+    --shadow: 0 2px 8px rgba(0,0,0,.09), 0 1px 3px rgba(0,0,0,.05);
+    --shadow-md: 0 6px 20px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.06);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* SPLASH */
+  #splash {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, #0f1b3d 0%, #1d3a7a 55%, #0c2d5e 100%);
+    z-index: 2000;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    transition: opacity .5s ease, visibility .5s ease;
+  }
+  #splash::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 28% 38%, rgba(99,179,255,.13) 0%, transparent 55%),
+                radial-gradient(circle at 72% 68%, rgba(59,130,246,.10) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  #splash.hidden { opacity: 0; visibility: hidden; }
+  .splash-content {
+    background: rgba(255,255,255,.07);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,.15);
+    padding: 3rem 4rem; border-radius: 24px;
+    max-width: 520px; width: 90%;
+    display: flex; flex-direction: column; align-items: center;
+    box-shadow: 0 24px 80px rgba(0,0,0,.4);
+    position: relative;
+  }
+  .splash-logo { max-width: 160px; height: auto; margin-bottom: 1.75rem; border-radius: 12px; }
+  .splash-title { font-size: 26px; font-weight: 700; color: #fff; margin-bottom: .4rem; letter-spacing: -.5px; }
+  .splash-caption { font-size: 14px; color: rgba(255,255,255,.55); margin-bottom: 2.5rem; font-style: italic; }
+  .splash-start-btn {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: #fff; border: none;
+    padding: 13px 38px; font-size: 15px; font-weight: 600;
+    border-radius: 50px; cursor: pointer;
+    box-shadow: 0 4px 22px rgba(59,130,246,.45);
+    transition: transform .15s, box-shadow .15s;
+    font-family: inherit;
+  }
+  .splash-start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(59,130,246,.55); }
+  .splash-credits {
+    position: absolute; bottom: 2rem;
+    font-size: 12px; color: rgba(255,255,255,.4); line-height: 1.7;
+  }
+  .splash-credits strong { color: rgba(255,255,255,.65); }
+
+  /* HEADER */
+  header {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 62px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+  .logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 15px; color: var(--text); letter-spacing: -.3px; }
+  .logo-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; box-shadow: 0 2px 10px rgba(29,78,216,.3);
+  }
+  .logo-sub { font-size: 11px; font-weight: 400; color: var(--text3); display: block; margin-top: 1px; }
+
+  .step-nav {
+    display: flex; align-items: center;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 50px; padding: 4px;
+  }
+  .step-nav button {
+    background: none; border: none;
+    padding: 6px 16px; font-size: 12px; font-weight: 500;
+    color: var(--text3); cursor: pointer; border-radius: 50px;
+    transition: all .18s; white-space: nowrap;
+    display: flex; align-items: center; gap: 6px;
+    font-family: inherit;
+  }
+  .step-nav button .sn {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--border2); color: var(--text3);
+    font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .18s;
+  }
+  .step-nav button.active { background: var(--surface); color: var(--accent); box-shadow: 0 1px 5px rgba(0,0,0,.12); }
+  .step-nav button.active .sn { background: var(--accent); color: #fff; }
+  .step-nav button:disabled { opacity: .4; cursor: not-allowed; }
+  .step-sep { width: 1px; height: 14px; background: var(--border2); margin: 0 2px; }
+
+  /* MAIN */
+  main { max-width: 1140px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .page-header { margin-bottom: 1.75rem; }
+  .page-header h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -.4px; }
+  .page-header p { font-size: 13px; color: var(--text2); margin-top: 5px; max-width: 640px; }
+
+  /* CARDS */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.375rem 1.625rem;
+    margin-bottom: 1.125rem; box-shadow: var(--shadow);
+  }
+  .card-title {
+    font-size: 13px; font-weight: 700; color: var(--text);
+    margin-bottom: 1.125rem; display: flex; align-items: center; gap: 8px;
+  }
+  .card-title .step-chip {
+    background: var(--accent); color: #fff;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px; letter-spacing: .3px;
+  }
+
+  /* WELL TOOLBAR */
+  .well-toolbar {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-bottom: 1.25rem; align-items: center;
+    padding: 10px 14px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius);
+  }
+  .well-toolbar-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .6px; margin-right: 4px; }
+  .type-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 13px; border-radius: 20px;
+    border: 1.5px solid var(--border2);
+    font-size: 12px; font-weight: 500;
+    cursor: pointer; transition: all .14s;
+    background: var(--surface); color: var(--text2);
+    font-family: inherit;
+  }
+  .type-btn .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .type-btn.selected { border-color: var(--accent); background: var(--accent-light); color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+  .type-btn:hover:not(.selected) { border-color: var(--border2); background: var(--surface3); }
+
+  .t-strain { --wc: #dbeafe; --wb: #3b82f6; --wt: #1e3a6e; }
+  .t-blank   { --wc: #f1f5f9; --wb: #94a3b8; --wt: #475569; }
+  .t-pos     { --wc: #d1fae5; --wb: #10b981; --wt: #064e3b; }
+  .t-neg     { --wc: #ffe4e6; --wb: #f43f5e; --wt: #881337; }
+  .t-empty   { --wc: #f9fafb; --wb: #e5e7eb; --wt: #9ca3af; }
+
+  /* PLATE */
+  .plate-container { overflow-x: auto; padding-bottom: 4px; }
+  table.plate { border-collapse: separate; border-spacing: 3px; font-size: 10px; }
+  table.plate th { width: 30px; text-align: center; color: var(--text3); font-weight: 600; font-size: 11px; padding: 3px; }
+  table.plate th.row-hdr { width: 24px; }
+
+  td.well {
+    width: 70px; height: 62px; border-radius: 8px;
+    border: 1.5px solid var(--wb, #e5e7eb);
+    background: var(--wc, #f9fafb);
+    cursor: pointer; vertical-align: top; text-align: center;
+    transition: all .12s; position: relative; padding: 4px 3px;
+    user-select: none;
+  }
+  td.well:hover { filter: brightness(.95); box-shadow: 0 0 0 2.5px var(--accent), var(--shadow); transform: scale(1.04); z-index: 1; }
+  td.well.selected-paint { box-shadow: 0 0 0 2.5px var(--accent); }
+
+  .well-id { font-size: 9px; color: var(--wt, #9ca3af); font-weight: 700; display: block; line-height: 1; margin-bottom: 3px; font-family: 'JetBrains Mono', monospace; }
+  .well-type-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--wb, #e5e7eb); display: inline-block; margin-bottom: 2px; }
+  .well-name { font-size: 9px; color: var(--wt, #9ca3af); display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 62px; margin: 0 auto; line-height: 1.2; font-weight: 600; }
+  .well-rep { font-size: 8px; color: var(--wt, #b0b8c8); display: block; opacity: .7; }
+  .well-media { font-size: 8px; color: var(--accent); display: block; font-weight: 600; margin-top: 1px; }
+
+  /* SELECTION BAR */
+  .sel-bar {
+    display: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; border-radius: var(--radius);
+    padding: 10px 16px; font-size: 12px; font-weight: 500;
+    margin-bottom: 10px;
+    align-items: center; justify-content: space-between;
+    box-shadow: 0 4px 12px var(--accent-glow);
+  }
+  .sel-bar.on { display: flex; }
+
+  /* MODAL */
+  .modal-backdrop {
+    display: none; position: fixed; inset: 0;
+    background: rgba(15,20,50,.5); backdrop-filter: blur(4px);
+    z-index: 500; align-items: center; justify-content: center;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--surface); border-radius: var(--radius-lg);
+    padding: 1.75rem; width: 360px;
+    box-shadow: var(--shadow-lg); border: 1px solid var(--border);
+    animation: modalIn .18s ease;
+  }
+  @keyframes modalIn { from { opacity:0; transform:scale(.95) translateY(8px); } to { opacity:1; transform:none; } }
+  .modal h3 { font-size: 16px; font-weight: 700; margin-bottom: 1.25rem; color: var(--text); }
+  .modal label {
+    display: block; font-size: 10px; font-weight: 700;
+    color: var(--text3); margin-bottom: 5px; margin-top: 14px;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  .modal input[type=text], .modal input[type=number], .modal select {
+    width: 100%; padding: 8px 11px;
+    border: 1.5px solid var(--border2); border-radius: var(--radius);
+    font-size: 13px; color: var(--text); background: var(--surface);
+    outline: none; transition: border-color .15s, box-shadow .15s;
+    font-family: inherit;
+  }
+  .modal input:focus, .modal select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+  .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 4px; }
+  .type-opt {
+    padding: 8px 6px; border-radius: var(--radius);
+    border: 1.5px solid var(--border); cursor: pointer;
+    text-align: center; font-size: 11px; font-weight: 600;
+    transition: all .12s; color: var(--text2);
+  }
+  .type-opt:hover { border-color: var(--border2); background: var(--surface2); }
+  .type-opt.sel { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+  .modal-actions { display: flex; gap: 8px; margin-top: 1.5rem; }
+
+  /* BUTTONS */
+  .btn {
+    padding: 8px 18px; border-radius: var(--radius);
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; border: none;
+    transition: all .14s; display: inline-flex; align-items: center; gap: 6px;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #fff; box-shadow: 0 2px 8px rgba(29,78,216,.3);
+  }
+  .btn-primary:hover:not(:disabled) { background: linear-gradient(135deg, #1d4ed8, #1e40af); box-shadow: 0 4px 14px rgba(29,78,216,.4); transform: translateY(-1px); }
+  .btn-secondary { background: var(--surface); color: var(--text2); border: 1.5px solid var(--border2); }
+  .btn-secondary:hover:not(:disabled) { background: var(--surface2); border-color: var(--accent); color: var(--accent); }
+  .btn-danger { background: var(--red-bg); color: var(--red); border: 1.5px solid #fca5a5; }
+  .btn-danger:hover:not(:disabled) { background: #fecaca; }
+  .btn-sm { padding: 6px 12px; font-size: 11px; }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-ghost { background: rgba(255,255,255,.15); color: #fff; border: 1px solid rgba(255,255,255,.25); }
+  .btn-ghost:hover { background: rgba(255,255,255,.22); }
+
+  /* UPLOAD */
+  .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .upload-zone {
+    border: 2px dashed var(--border2); border-radius: var(--radius-lg);
+    padding: 2rem 1.5rem; text-align: center; cursor: pointer;
+    transition: all .15s; position: relative; background: var(--surface2);
+  }
+  .upload-zone:hover, .upload-zone.drag {
+    border-color: var(--accent); background: var(--accent-light);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+  }
+  .upload-zone input[type=file] { display: none; }
+  .upload-zone .uz-icon { font-size: 30px; margin-bottom: 10px; display: block; }
+  .upload-zone .uz-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 20px; margin-bottom: 8px; letter-spacing: .3px;
+  }
+  .uz-badge-600 { background: #dbeafe; color: #1d4ed8; }
+  .uz-badge-570 { background: #d1fae5; color: #065f46; }
+  .upload-zone .uz-wave { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .upload-zone .uz-hint { font-size: 12px; color: var(--text3); }
+  .upload-status {
+    margin-top: 10px; font-size: 12px; font-weight: 600;
+    padding: 6px 12px; border-radius: 20px; display: inline-block;
+  }
+  .upload-status.ok { background: var(--green-bg); color: var(--green); }
+  .upload-status.err { background: var(--red-bg); color: var(--red); }
+  .upload-meta {
+    margin-top: 8px; font-size: 11px; color: var(--text3); line-height: 1.9;
+    text-align: left; padding: 8px 10px;
+    background: var(--surface3); border-radius: var(--radius);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .upload-meta b { color: var(--text2); font-family: 'Inter', sans-serif; }
+
+  /* THRESHOLDS */
+  .thresh-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .thresh-card {
+    border: 1.5px solid var(--border2); border-radius: var(--radius);
+    padding: 12px 14px; background: var(--surface2);
+  }
+  .thresh-card label { font-size: 10px; font-weight: 700; color: var(--text3); display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: .5px; }
+  .thresh-card-inner { display: flex; align-items: center; gap: 8px; }
+  .thresh-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .thresh-card input {
+    width: 80px; padding: 6px 9px;
+    border: 1.5px solid var(--border2); border-radius: 6px;
+    font-size: 13px; font-weight: 600; color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--surface); outline: none; transition: border-color .15s;
+  }
+  .thresh-card input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+  .thresh-label { font-size: 12px; color: var(--text2); font-weight: 500; }
+
+  /* FORMULA */
+  .formula-box {
+    background: #0d1b3e; border-radius: var(--radius);
+    padding: 14px 18px; font-size: 12.5px;
+    color: #7dd3fc; margin-bottom: 1.125rem;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.9; border-left: 3px solid #3b82f6;
+  }
+  .formula-box .fk { color: #93c5fd; font-weight: 700; }
+  .formula-box .fo { color: #64748b; }
+
+  /* RESULTS */
+  .results-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+    gap: 10px; margin-bottom: 1.25rem;
+  }
+  .stat-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1rem; text-align: center;
+  }
+  .stat-card .sv { font-size: 28px; font-weight: 700; color: var(--text); line-height: 1; }
+  .stat-card .sl { font-size: 11px; color: var(--text3); margin-top: 5px; font-weight: 500; }
+
+  table.rtbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  table.rtbl thead { position: static; }
+  table.rtbl th {
+    padding: 9px 11px; text-align: left; font-weight: 700;
+    font-size: 10px; color: var(--text3);
+    border-bottom: 2px solid var(--border);
+    text-transform: uppercase; letter-spacing: .4px;
+    background: var(--surface2); white-space: nowrap;
+  }
+  table.rtbl th.r { text-align: right; }
+  table.rtbl td { padding: 8px 11px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+  table.rtbl td.r { text-align: right; font-variant-numeric: tabular-nums; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  table.rtbl tr:last-child td { border-bottom: none; }
+  table.rtbl tr:hover td { background: var(--accent-light); }
+
+  .pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .p-none { background: var(--surface3); color: var(--text3); }
+  .p-weak { background: var(--orange-bg); color: var(--orange); }
+  .p-mod  { background: var(--pink-bg); color: var(--pink); }
+  .p-str  { background: var(--red-bg); color: var(--red); }
+  .p-pos  { background: var(--green-bg); color: var(--green); }
+  .p-neg  { background: var(--teal-bg); color: var(--teal); }
+
+  .chart-wrap { position: relative; margin-bottom: 1.25rem; }
+  .legend-row { display: flex; gap: 14px; flex-wrap: wrap; font-size: 11px; color: var(--text3); margin-bottom: 1rem; }
+  .legend-row span { display: flex; align-items: center; gap: 5px; }
+  .legend-row .ld { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+  .divider { height: 1px; background: var(--border); margin: 1.25rem 0; }
+
+  .guide-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .guide-item {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 12px 14px;
+    font-size: 12px; color: var(--text2);
+  }
+  .guide-item b { color: var(--text); display: block; margin-bottom: 3px; }
+
+  .bottom-bar {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    justify-content: space-between; align-items: center; margin-top: 1.25rem;
+  }
+  .btn-group { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  /* MODE SELECTOR */
+  .mode-select-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .mode-card {
+    border: 2px solid var(--border2); border-radius: var(--radius-lg);
+    padding: 1.25rem 1.375rem; cursor: pointer; background: var(--surface2);
+    transition: all .15s;
+  }
+  .mode-card:hover { border-color: var(--border2); background: var(--surface3); }
+  .mode-card.selected { border-color: var(--accent); background: var(--accent-light); box-shadow: 0 0 0 3px var(--accent-glow); }
+  .mode-card .mi { font-size: 26px; margin-bottom: 8px; display: block; }
+  .mode-card h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .mode-card p { font-size: 12px; color: var(--text2); }
+
+  /* Mode-based visibility: elements tagged .sbf-only / .abf-only show only in their mode */
+  body.mode-antibiofilm .sbf-only { display: none !important; }
+  body.mode-sbf .abf-only { display: none !important; }
+  body.mode-antibiofilm .upload-grid { grid-template-columns: 1fr; max-width: 480px; }
+
+  @media (max-width: 700px) {
+    main { padding: 1rem 1rem 3rem; }
+    .upload-grid { grid-template-columns: 1fr; }
+    table.plate { font-size: 8px; }
+    td.well { width: 52px; height: 48px; }
+    .step-nav button { padding: 5px 10px; font-size: 11px; }
+    .thresh-grid { grid-template-columns: 1fr; }
+    .results-grid { grid-template-columns: repeat(2, 1fr); }
+    .mode-select-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body class="mode-sbf">
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-content">
+    <img src="Logo.jpg" alt="Phages for Life Logo" class="splash-logo" onerror="this.style.display='none'">
+    <h1 class="splash-title">BiofilmQ-HT</h1>
+    <p class="splash-caption">"Harnessing Bacteriophages for Human Welfare"</p>
+    <button class="splash-start-btn" onclick="dismissSplash()">Start Assay →</button>
+  </div>
+  <div class="splash-credits">
+    <strong>Created by BARC</strong><br>Developed by Hiren Joshi
+  </div>
+</div>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <circle cx="6" cy="6" r="2.5" fill="white" opacity=".9"/>
+        <circle cx="11" cy="6" r="2.5" fill="white" opacity=".9"/>
+        <circle cx="16" cy="6" r="2.5" fill="white" opacity=".9"/>
+        <circle cx="6" cy="11" r="2.5" fill="white" opacity=".6"/>
+        <circle cx="11" cy="11" r="2.5" fill="#93c5fd"/>
+        <circle cx="16" cy="11" r="2.5" fill="white" opacity=".6"/>
+        <circle cx="6" cy="16" r="2.5" fill="white" opacity=".35"/>
+        <circle cx="11" cy="16" r="2.5" fill="white" opacity=".35"/>
+        <circle cx="16" cy="16" r="2.5" fill="white" opacity=".35"/>
+      </svg>
+    </div>
+    <div>
+      BiofilmQ-HT
+      <span class="logo-sub">Crystal violet assay · Tecan i-control</span>
+    </div>
+  </div>
+  <nav class="step-nav">
+    <button class="active" onclick="goTo(0)" id="nav0"><span class="sn">1</span> Plate map</button>
+    <div class="step-sep"></div>
+    <button disabled onclick="goTo(1)" id="nav1"><span class="sn">2</span> Upload data</button>
+    <div class="step-sep"></div>
+    <button disabled onclick="goTo(2)" id="nav2"><span class="sn">3</span> Results</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ══════════════════════ PAGE 1: PLATE MAP ══════════════════════ -->
+<div class="page active" id="page0">
+  <div class="page-header">
+    <h1>Design your plate map</h1>
+    <p id="plateHeaderP">Assign each well — strains/conditions, blanks, and controls. Click a well to assign it, or select a region for bulk-assign. Match <b>Media Condition</b> names between strains/conditions and blanks for correct blank subtraction.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="step-chip">Step 0</span> Choose experiment type</div>
+    <div class="mode-select-grid">
+      <div class="mode-card selected" id="modeCardSbf" onclick="setMode('sbf')">
+        <span class="mi">🧫</span>
+        <h3>SBF Index — Biofilm Formation</h3>
+        <p>Quantify biofilm biomass (crystal violet, OD570) normalized to growth (OD600). Classifies strains/conditions as non/weak/moderate/strong biofilm formers.</p>
+      </div>
+      <div class="mode-card" id="modeCardAbf" onclick="setMode('antibiofilm')">
+        <span class="mi">🧪</span>
+        <h3>Antibiofilm Activity — % Inhibition</h3>
+        <p>Compare each strain/condition against an untreated Positive ctrl using OD570 only, to calculate % biofilm inhibition. No OD600 file needed.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+      <div class="card-title" style="margin-bottom:0">
+        <span class="step-chip">Step 1</span> Select a well type, then click wells to assign
+      </div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <button class="btn btn-secondary btn-sm" onclick="clearAllWells()">🗑 Clear all</button>
+        <button class="btn btn-secondary btn-sm action-btn" onclick="saveTemplate()">💾 Save template</button>
+        <button class="btn btn-secondary btn-sm action-btn" onclick="loadTemplate()">📂 Load template</button>
+        <input type="file" id="templateUpload" accept=".json" style="display:none" onchange="handleTemplateUpload(event)">
+        <button class="btn btn-secondary btn-sm" onclick="toggleSelMode()" id="selModeBtn">⬚ Select region</button>
+      </div>
+    </div>
+
+    <div class="well-toolbar">
+      <span class="well-toolbar-label">Paint:</span>
+      <button class="type-btn t-strain selected" onclick="setActiveType('strain')" id="tb-strain">
+        <span class="dot" style="background:#3b82f6"></span><span id="tbStrainLabel">Strain/Condition</span>
+      </button>
+      <button class="type-btn t-blank" onclick="setActiveType('blank')" id="tb-blank">
+        <span class="dot" style="background:#94a3b8"></span>Blank
+      </button>
+      <button class="type-btn t-pos" onclick="setActiveType('pos')" id="tb-pos">
+        <span class="dot" style="background:#16a34a"></span>Positive ctrl
+      </button>
+      <button class="type-btn t-neg" onclick="setActiveType('neg')" id="tb-neg">
+        <span class="dot" style="background:#f43f5e"></span>Negative ctrl
+      </button>
+      <button class="type-btn t-empty" onclick="setActiveType('empty')" id="tb-empty">
+        <span class="dot" style="background:#dde1ea"></span>Empty
+      </button>
+    </div>
+
+    <div class="sel-bar" id="selBar">
+      <span id="selCount">0 wells selected</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;border:none;" onclick="bulkAssignSelected()">Assign selected →</button>
+        <button class="btn btn-sm" style="background:rgba(255,255,255,.1);color:#fff;border:none;" onclick="clearSelection()">✕ Cancel</button>
+      </div>
+    </div>
+
+    <div class="plate-container">
+      <table class="plate" id="plateTable"></table>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-top:1rem;">
+      <div style="font-size:12px; color:var(--text3); display:flex; gap:14px;" id="plateStats">
+        <span>0 strain/condition wells</span><span>0 blank wells</span><span>0 controls</span>
+      </div>
+      <button class="btn btn-primary" onclick="goTo(1)" id="btnToUpload" disabled>
+        Continue to Upload →
+      </button>
+    </div>
+  </div>
+
+  <div class="card" style="background:var(--surface2); box-shadow:none;">
+    <div class="card-title" style="margin-bottom:.875rem; color:var(--text3);">
+      Quick guide
+    </div>
+    <div class="guide-grid">
+      <div class="guide-item"><b>Click a well</b>Opens the dialog to set strain/condition name, media condition, and replicate number.</div>
+      <div class="guide-item"><b>Select region</b>Enable selection mode, drag to highlight a block, then bulk-assign all at once.</div>
+      <div class="guide-item"><b>Media matching</b>Give strains/conditions and blanks the same Media Condition name — the calculator subtracts the right blank automatically.</div>
+      <div class="guide-item"><b>% Inhibition</b>Assign Positive ctrl wells. The calculator compares each strain/condition against the matching Pos Ctrl to compute inhibition.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: UPLOAD -->
+<div class="page" id="page1">
+  <div class="page-header">
+    <h1>Upload Tecan data files</h1>
+    <p id="uploadHeaderP">Upload both wavelength files exported from your Tecan i-control reader. Drag &amp; drop or click to browse.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="step-chip">Step 2</span> Tecan export files (.xlsx)</div>
+    <div class="upload-grid">
+      <div class="sbf-only">
+        <div class="upload-zone" id="dz600" onclick="document.getElementById('f600').click()">
+          <input type="file" id="f600" accept=".xlsx,.xls">
+          <span class="uz-icon">📈</span>
+          <span class="uz-badge uz-badge-600">OD 600 nm</span>
+          <div class="uz-wave">Growth measurement</div>
+          <div class="uz-hint">Cell density / turbidity file</div>
+        </div>
+        <div id="st600"></div>
+        <div id="mt600"></div>
+      </div>
+      <div>
+        <div class="upload-zone" id="dz570" onclick="document.getElementById('f570').click()">
+          <input type="file" id="f570" accept=".xlsx,.xls">
+          <span class="uz-icon">🔬</span>
+          <span class="uz-badge uz-badge-570">OD 570 nm</span>
+          <div class="uz-wave">Crystal violet stain</div>
+          <div class="uz-hint">Biofilm biomass file</div>
+        </div>
+        <div id="st570"></div>
+        <div id="mt570"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="step-chip">Step 3</span> Formulas &amp; Classification Thresholds</div>
+    <div class="formula-box">
+      <div class="sbf-only">
+        <span class="fk">SBF Index</span> &nbsp;= &nbsp;(OD<sub style="font-size:10px">570 sample</sub> − OD<sub style="font-size:10px">570 blank</sub>) ÷ (OD<sub style="font-size:10px">600 sample</sub> − OD<sub style="font-size:10px">600 blank</sub>)<br>
+      </div>
+      <span class="fk">% Inhibition</span> = &nbsp;100 − [ (OD<sub style="font-size:10px">570 sample</sub> − blank) ÷ (OD<sub style="font-size:10px">570 pos ctrl</sub> − blank) × 100 ]
+    </div>
+    <div class="thresh-grid sbf-only">
+      <div class="thresh-card">
+        <label>🟡 Weak biofilm</label>
+        <div class="thresh-card-inner">
+          <span style="font-size:12px;color:var(--text2);">SBF ≥</span>
+          <input type="number" id="tw" value="0.5" step="0.1" min="0">
+        </div>
+      </div>
+      <div class="thresh-card">
+        <label>🩷 Moderate biofilm</label>
+        <div class="thresh-card-inner">
+          <span style="font-size:12px;color:var(--text2);">SBF ≥</span>
+          <input type="number" id="tm" value="1.0" step="0.1" min="0">
+        </div>
+      </div>
+      <div class="thresh-card">
+        <label>🔴 Strong biofilm</label>
+        <div class="thresh-card-inner">
+          <span style="font-size:12px;color:var(--text2);">SBF ≥</span>
+          <input type="number" id="ts" value="2.0" step="0.1" min="0">
+        </div>
+      </div>
+    </div>
+    <div class="thresh-grid abf-only">
+      <div class="thresh-card">
+        <label>🟡 Weak inhibition</label>
+        <div class="thresh-card-inner">
+          <span style="font-size:12px;color:var(--text2);">% Inhib ≥</span>
+          <input type="number" id="ti_w" value="25" step="1" min="0" max="100">
+        </div>
+      </div>
+      <div class="thresh-card">
+        <label>🩷 Moderate inhibition</label>
+        <div class="thresh-card-inner">
+          <span style="font-size:12px;color:var(--text2);">% Inhib ≥</span>
+          <input type="number" id="ti_m" value="50" step="1" min="0" max="100">
+        </div>
+      </div>
+      <div class="thresh-card">
+        <label>🔴 Strong inhibition</label>
+        <div class="thresh-card-inner">
+          <span style="font-size:12px;color:var(--text2);">% Inhib ≥</span>
+          <input type="number" id="ti_s" value="75" step="1" min="0" max="100">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <button class="btn btn-secondary" onclick="goTo(0)">← Back to plate map</button>
+    <button class="btn btn-primary" id="btnCalc" onclick="calculate()" disabled>
+      ⚗️ Calculate SBF &amp; Inhibition →
+    </button>
+  </div>
+</div>
+
+<!-- PAGE 3: RESULTS -->
+<div class="page" id="page2">
+  <div class="page-header" id="resHeader">
+    <h1 id="resTitle">SBF Results</h1>
+    <p id="resultsSub"></p>
+  </div>
+
+  <div class="card" id="exportCard" style="background:linear-gradient(135deg,#eff4ff,#f5f7fb); border-color:var(--border2);">
+    <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+      <div>
+        <div class="card-title" style="margin-bottom:4px">📄 Publication-ready report</div>
+        <p style="font-size:12px; color:var(--text2); max-width:560px;">One PDF with methodology, thresholds used, instrument metadata, summary statistics, the chart, the full results table and the plate heatmap — ready to attach to a manuscript, thesis, or lab notebook.</p>
+      </div>
+      <button class="btn btn-primary action-btn" id="btnReport" onclick="generateReport()">📄 Generate PDF report</button>
+    </div>
+  </div>
+
+  <div class="card" id="statsCard"></div>
+
+  <div class="card" id="chartCard">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:8px;">
+      <div class="card-title" style="margin-bottom:0" id="chartTitle">SBF Index by strain/condition</div>
+      <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+        <div class="legend-row" id="chartLegend" style="margin-bottom:0"></div>
+        <button class="btn btn-secondary btn-sm action-btn" onclick="downloadCardImage('chartCard','Chart')">⬇ PNG</button>
+      </div>
+    </div>
+    <div class="chart-wrap" id="chartWrap">
+      <canvas id="sbfChart" role="img" aria-label="Horizontal bar chart showing SBF index per strain/condition"></canvas>
+    </div>
+  </div>
+
+  <div class="card" id="tableCard">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:8px;">
+      <div class="card-title" style="margin-bottom:0">Detailed results table</div>
+      <div class="btn-group">
+        <button class="btn btn-secondary btn-sm action-btn" onclick="downloadCSV()">⬇ CSV</button>
+        <button class="btn btn-secondary btn-sm action-btn" onclick="downloadCardImage('tableCard','Results_Table')">⬇ PNG</button>
+      </div>
+    </div>
+    <div style="border-radius:var(--radius); border:1px solid var(--border); overflow:hidden;">
+      <div style="overflow-x:auto; max-height:480px; overflow-y:auto;" data-scroll-capture>
+        <table class="rtbl" id="resultsTable" style="min-width:860px;">
+          <thead style="position:sticky; top:0; z-index:10; background:var(--surface2);">
+            <tr>
+              <th id="thStrainCol">Strain / ID</th>
+              <th>Type</th>
+              <th>Media</th>
+              <th class="r">n</th>
+              <th class="r sbf-only">Mean OD600</th>
+              <th class="r">Mean OD570</th>
+              <th class="r sbf-only">Blank OD600</th>
+              <th class="r">Blank OD570</th>
+              <th class="r sbf-only">SBF Index</th>
+              <th class="r">% Inhibition</th>
+              <th>Classification</th>
+            </tr>
+          </thead>
+          <tbody id="resultsTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="plateResultCard">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:.5rem; flex-wrap:wrap; gap:8px;">
+      <div class="card-title" id="heatmapTitle" style="margin-bottom:0">Plate heatmap — SBF classification</div>
+      <button class="btn btn-secondary btn-sm action-btn" onclick="downloadCardImage('plateResultCard','Plate_Heatmap')">⬇ PNG</button>
+    </div>
+    <div class="plate-container">
+      <table class="plate" id="heatmapTable"></table>
+    </div>
+    <div class="legend-row" id="heatmapLegend" style="margin-top:.875rem;margin-bottom:0"></div>
+  </div>
+
+  <div class="bottom-bar" id="bottomActions">
+    <button class="btn btn-secondary action-btn" onclick="goTo(1)">← Back</button>
+    <button class="btn btn-secondary action-btn" onclick="startOver()">↺ New experiment</button>
+  </div>
+</div>
+
+</main>
+
+<!-- ══════════════════════ WELL MODAL ══════════════════════ -->
+<div class="modal-backdrop" id="wellModal">
+  <div class="modal">
+    <h3>Well <span id="mWellKey" style="color:var(--accent)"></span></h3>
+    <label>Well type</label>
+    <div class="type-grid">
+      <div class="type-opt" onclick="selectModalType('strain')" id="mt-strain"><span id="mtStrainLabel">Strain</span></div>
+      <div class="type-opt" onclick="selectModalType('blank')" id="mt-blank">Blank</div>
+      <div class="type-opt" onclick="selectModalType('pos')" id="mt-pos">Positive ctrl</div>
+      <div class="type-opt" onclick="selectModalType('neg')" id="mt-neg">Negative ctrl</div>
+      <div class="type-opt" onclick="selectModalType('empty')" id="mt-empty">Empty</div>
+    </div>
+    
+    <label>Media / Condition (Match for Blank & Pos Ctrl)</label>
+    <input type="text" id="mMedia" placeholder="e.g. TSB, Default" value="Default" autocomplete="off">
+
+    <div id="mNameGroup">
+      <label id="mNameLabel">Strain / isolate ID</label>
+      <input type="text" id="mName" placeholder="e.g. Kp-017" autocomplete="off">
+      <label>Replicate #</label>
+      <input type="number" id="mRep" value="1" min="1" max="12" style="width:80px;">
+    </div>
+    
+    <div class="modal-actions">
+      <button class="btn btn-primary action-btn" onclick="saveWell()">Save</button>
+      <button class="btn btn-danger btn-sm action-btn" onclick="clearWell()">Clear well</button>
+      <button class="btn btn-secondary btn-sm action-btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ BULK MODAL ══════════════════════ -->
+<div class="modal-backdrop" id="bulkModal">
+  <div class="modal">
+    <h3>Assign <span id="bulkCount"></span> wells</h3>
+    <label>Well type</label>
+    <div class="type-grid">
+      <div class="type-opt" onclick="selectBulkType('strain')" id="bt-strain"><span id="btStrainLabel">Strain</span></div>
+      <div class="type-opt" onclick="selectBulkType('blank')" id="bt-blank">Blank</div>
+      <div class="type-opt" onclick="selectBulkType('pos')" id="bt-pos">Positive ctrl</div>
+      <div class="type-opt" onclick="selectBulkType('neg')" id="bt-neg">Negative ctrl</div>
+      <div class="type-opt sel" onclick="selectBulkType('empty')" id="bt-empty">Empty</div>
+    </div>
+    
+    <label>Media / Condition (Match for Blank & Pos Ctrl)</label>
+    <input type="text" id="bMedia" placeholder="e.g. TSB, Default" value="Default">
+
+    <div id="bNameGroup">
+      <label id="bNameLabel">Strain / isolate ID</label>
+      <input type="text" id="bName" placeholder="e.g. Kp-017">
+      <label>Auto-number replicates?</label>
+      <select id="bAutoRep">
+        <option value="yes">Yes — number 1, 2, 3…</option>
+        <option value="no">No — same replicate # for all</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-primary action-btn" onclick="saveBulk()">Apply</button>
+      <button class="btn btn-secondary btn-sm action-btn" onclick="closeBulkModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+const ROWS = ['A','B','C','D','E','F','G','H'];
+const COLS = Array.from({length:12}, (_,i) => i+1);
+
+let wellData = {};   // key -> {type, name, rep, media}
+let grids = {od600: null, od570: null};
+let tecanMeta = {od600: null, od570: null};
+let activeType = 'strain';
+let activeWell = null;
+let selMode = false;
+let selectedWells = new Set();
+let dragging = false;
+let sbfChart = null;
+let lastResults = [];
+let mode = 'sbf'; // 'sbf' | 'antibiofilm'
+let lastCalcParams = {tw:null, tm:null, ts:null};
+let lastSummary = {numMedia:0, nBlanks:0};
+
+const TYPE_CSS = {
+  strain: {wc:'#dbeafe', wb:'#3b82f6', wt:'#1e3a6e'},
+  blank:  {wc:'#f1f5f9', wb:'#94a3b8', wt:'#475569'},
+  pos:    {wc:'#dcfce7', wb:'#16a34a', wt:'#14532d'},
+  neg:    {wc:'#ffe4e6', wb:'#f43f5e', wt:'#881337'},
+  empty:  {wc:'#ffffff', wb:'#dde1ea', wt:'#9099b0'},
+};
+
+const TYPE_LABELS = {strain:'Strain', blank:'Blank', pos:'Positive ctrl', neg:'Negative ctrl', empty:'Empty'};
+
+// ══════════════════════════════════════════════════════════
+// MODE SELECTION (SBF vs Antibiofilm % Inhibition)
+// ══════════════════════════════════════════════════════════
+// The tested entity is always called "Strain/Condition" — SBF assays compare
+// distinct strains/isolates, while Antibiofilm assays often compare different
+// treatment conditions, so the same uniform label covers both.
+function entityLabel(plural) {
+  return plural ? 'Strains/Conditions' : 'Strain/Condition';
+}
+function typeLabel(t) {
+  if (t === 'strain') return entityLabel(false);
+  return TYPE_LABELS[t] || t;
+}
+
+function setMode(m) {
+  mode = m;
+  const isSbf = m === 'sbf';
+  document.body.classList.toggle('mode-sbf', isSbf);
+  document.body.classList.toggle('mode-antibiofilm', !isSbf);
+  document.getElementById('modeCardSbf').classList.toggle('selected', isSbf);
+  document.getElementById('modeCardAbf').classList.toggle('selected', !isSbf);
+  document.getElementById('btnCalc').innerHTML = isSbf
+    ? '⚗️ Calculate SBF &amp; Inhibition →'
+    : '⚗️ Calculate % Inhibition →';
+  document.getElementById('uploadHeaderP').textContent = isSbf
+    ? 'Upload both wavelength files exported from your Tecan i-control reader. Drag & drop or click to browse.'
+    : 'Upload the OD570 (crystal violet) wavelength file exported from your Tecan i-control reader. Drag & drop or click to browse.';
+
+  // Terminology: always "Strain/Condition" — applies to both SBF and Antibiofilm modes.
+  const label = entityLabel(false);
+  document.getElementById('tbStrainLabel').textContent = label;
+  document.getElementById('mtStrainLabel').textContent = label;
+  document.getElementById('btStrainLabel').textContent = label;
+  document.getElementById('thStrainCol').textContent = label + ' / ID';
+  document.getElementById('bNameLabel').textContent = label + ' / isolate ID';
+  if (modalType === 'strain') document.getElementById('mNameLabel').textContent = label + ' / isolate ID';
+  document.getElementById('mName').placeholder = 'e.g. Kp-017 or Condition-A';
+  document.getElementById('bName').placeholder = 'e.g. Kp-017 or Condition-A';
+  document.getElementById('plateHeaderP').innerHTML =
+    'Assign each well — strains/conditions, blanks, and controls. Click a well to assign it, or select a region for bulk-assign. Match <b>Media Condition</b> names between strains/conditions and blanks for correct blank subtraction.';
+
+  checkLoaded();
+}
+
+// ══════════════════════════════════════════════════════════
+// SPLASH SCREEN LOGIC
+// ══════════════════════════════════════════════════════════
+function dismissSplash() {
+  document.getElementById('splash').classList.add('hidden');
+}
+
+// ══════════════════════════════════════════════════════════
+// PLATE RENDER
+// ══════════════════════════════════════════════════════════
+function buildPlate(tableId, clickable=true) {
+  const tbl = document.getElementById(tableId);
+  tbl.innerHTML = '';
+
+  const hdr = tbl.insertRow();
+  const corner = document.createElement('th');
+  corner.className = 'row-hdr';
+  hdr.appendChild(corner);
+  COLS.forEach(c => {
+    const th = document.createElement('th');
+    th.textContent = c;
+    hdr.appendChild(th);
+  });
+
+  ROWS.forEach(row => {
+    const tr = tbl.insertRow();
+    const rh = document.createElement('th');
+    rh.className = 'row-hdr';
+    rh.textContent = row;
+    tr.appendChild(rh);
+
+    COLS.forEach(col => {
+      const key = row + col;
+      const td = document.createElement('td');
+      td.className = 'well';
+      td.id = (clickable ? 'w_' : 'h_') + key;
+      styleWell(td, key, clickable);
+      if (clickable) {
+        td.addEventListener('mousedown', e => onWellMouseDown(e, key));
+        td.addEventListener('mouseenter', e => onWellMouseEnter(e, key));
+        td.addEventListener('click', e => onWellClick(e, key));
+      }
+      tr.appendChild(td);
+    });
+  });
+
+  if (clickable) {
+    document.addEventListener('mouseup', () => { dragging = false; });
+  }
+}
+
+function styleWell(td, key, clickable=true) {
+  const d = wellData[key] || {type:'empty', media:'Default'};
+  const t = d.type || 'empty';
+  const css = TYPE_CSS[t];
+  td.style.setProperty('--wc', css.wc);
+  td.style.setProperty('--wb', css.wb);
+  td.style.setProperty('--wt', css.wt);
+  if (clickable && selectedWells.has(key)) td.classList.add('selected-paint');
+  else td.classList.remove('selected-paint');
+
+  let nameHtml = '';
+  const mediaLabel = (d.media && d.media !== 'Default') ? `<span class="well-media">${d.media}</span>` : '';
+
+  if (t === 'strain' && d.name) {
+    nameHtml = `<span class="well-name">${d.name}</span><span class="well-rep">rep ${d.rep||1}</span>${mediaLabel}`;
+  } else if (t === 'blank') {
+    nameHtml = `<span class="well-name" style="opacity:.7">blank</span>${mediaLabel}`;
+  } else if (t === 'pos') {
+    nameHtml = `<span class="well-name" style="opacity:.7">pos ctrl</span>${mediaLabel}`;
+  } else if (t === 'neg') {
+    nameHtml = `<span class="well-name" style="opacity:.7">neg ctrl</span>${mediaLabel}`;
+  }
+
+  td.innerHTML = `
+    <span class="well-id">${key}</span>
+    <span class="well-type-dot"></span>
+    ${nameHtml}
+  `;
+}
+
+function refreshPlate() {
+  ROWS.forEach(r => COLS.forEach(c => {
+    const key = r+c;
+    const td = document.getElementById('w_'+key);
+    if (td) styleWell(td, key, true);
+  }));
+  updatePlateStats();
+}
+
+function updatePlateStats() {
+  let assigned=0, blank=0, ctrl=0;
+  Object.values(wellData).forEach(d => {
+    if (d.type==='strain') assigned++;
+    else if (d.type==='blank') blank++;
+    else if (d.type==='pos'||d.type==='neg') ctrl++;
+  });
+  document.getElementById('plateStats').innerHTML =
+    `<span style="color:var(--accent);font-weight:600">${assigned}</span> strain/condition wells &nbsp;·&nbsp; <span style="color:var(--text3)">${blank}</span> blank wells &nbsp;·&nbsp; <span style="color:var(--text3)">${ctrl}</span> controls`;
+  document.getElementById('btnToUpload').disabled = (assigned===0 && blank===0);
+}
+
+// ══════════════════════════════════════════════════════════
+// TEMPLATE SAVING & LOADING (FILE-BASED)
+// ══════════════════════════════════════════════════════════
+function saveTemplate() {
+  if (Object.keys(wellData).length === 0) {
+    alert("The plate is empty. Please assign some wells before saving a template.");
+    return;
+  }
+
+  // Bundle well data together with the selected experiment mode (SBF vs Antibiofilm)
+  const payload = { mode, wellData };
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
+
+  // Create a hidden anchor to trigger download
+  const downloadAnchorNode = document.createElement('a');
+  downloadAnchorNode.setAttribute("href", dataStr);
+  downloadAnchorNode.setAttribute("download", "BiofilmQ-HT_" + (mode==='sbf'?'sbf':'antibiofilm') + "_plate_template.json");
+  document.body.appendChild(downloadAnchorNode); 
+  downloadAnchorNode.click();
+  downloadAnchorNode.remove();
+}
+
+function loadTemplate() {
+  // Trigger the hidden file input
+  document.getElementById('templateUpload').click();
+}
+
+function handleTemplateUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const loaded = JSON.parse(e.target.result);
+      // New format: {mode, wellData}. Old format (pre-mode feature): raw wellData object.
+      const isNewFormat = loaded && typeof loaded === 'object' && loaded.wellData && typeof loaded.wellData === 'object';
+      const loadedWellData = isNewFormat ? loaded.wellData : loaded;
+      const loadedMode = isNewFormat && (loaded.mode === 'sbf' || loaded.mode === 'antibiofilm') ? loaded.mode : null;
+
+      if (confirm("Loading the template will overwrite your current plate map. Do you want to continue?")) {
+        wellData = loadedWellData;
+        if (loadedMode) setMode(loadedMode);
+        refreshPlate();
+      }
+    } catch (err) {
+      alert("Error parsing template file. Please ensure it is a valid JSON template generated by this utility.");
+    }
+    // Reset file input so you can select the same file again later if needed
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+// ══════════════════════════════════════════════════════════
+// WELL INTERACTION
+// ══════════════════════════════════════════════════════════
+function onWellMouseDown(e, key) {
+  if (selMode) { dragging = true; toggleSel(key); return; }
+  if (activeType !== 'strain') {
+    wellData[key] = {type: activeType, name:'', rep:1, media:'Default'};
+    refreshPlate();
+    return;
+  }
+}
+
+function onWellMouseEnter(e, key) {
+  if (selMode && dragging) { toggleSel(key); return; }
+  if (!selMode && dragging && activeType !== 'strain') {
+    wellData[key] = {type: activeType, name:'', rep:1, media:'Default'};
+    refreshPlate();
+  }
+}
+
+let lastSelectedWell = null;
+
+function onWellClick(e, key) {
+  if (e.ctrlKey) {
+    if (selectedWells.has(key)) selectedWells.delete(key);
+    else selectedWells.add(key);
+    const n = selectedWells.size;
+    document.getElementById('selCount').textContent = n + ' well' + (n !== 1 ? 's' : '') + ' selected';
+    document.getElementById('selBar').classList.toggle('on', n > 0);
+    refreshPlate();
+    lastSelectedWell = key;
+    return;
+  }
+
+  if (e.shiftKey && lastSelectedWell) {
+    const r1 = ROWS.indexOf(lastSelectedWell.match(/[A-H]/)[0]);
+    const c1 = parseInt(lastSelectedWell.match(/\d+/)[0]) - 1;
+    const r2 = ROWS.indexOf(key.match(/[A-H]/)[0]);
+    const c2 = parseInt(key.match(/\d+/)[0]) - 1;
+
+    for(let r=Math.min(r1,r2);r<=Math.max(r1,r2);r++){
+      for(let c=Math.min(c1,c2);c<=Math.max(c1,c2);c++){
+        selectedWells.add(ROWS[r] + (c+1));
+      }
+    }
+    const n = selectedWells.size;
+    document.getElementById('selCount').textContent = n + ' well' + (n !== 1 ? 's' : '') + ' selected';
+    document.getElementById('selBar').classList.toggle('on', n > 0);
+    refreshPlate();
+    return;
+  }
+
+  if (selMode) return;
+
+  if (activeType === 'strain') {
+    openModal(key);
+  }
+  lastSelectedWell = key;
+}
+
+function toggleSel(key) {
+  if (selectedWells.has(key)) selectedWells.delete(key);
+  else selectedWells.add(key);
+  const td = document.getElementById('w_'+key);
+  if (td) {
+    if (selectedWells.has(key)) td.classList.add('selected-paint');
+    else td.classList.remove('selected-paint');
+  }
+  const bar = document.getElementById('selBar');
+  const n = selectedWells.size;
+  document.getElementById('selCount').textContent = n + ' well' + (n!==1?'s':'') + ' selected';
+  bar.classList.toggle('on', n > 0);
+}
+
+function clearSelection() {
+  selectedWells.forEach(k => {
+    const td = document.getElementById('w_'+k);
+    if (td) td.classList.remove('selected-paint');
+  });
+  selectedWells.clear();
+  document.getElementById('selBar').classList.remove('on');
+}
+
+function toggleSelMode() {
+  selMode = !selMode;
+  document.getElementById('selModeBtn').textContent = selMode ? '✕ Exit selection' : '⬚ Select region';
+  document.getElementById('selModeBtn').style.color = selMode ? 'var(--accent)' : '';
+  if (!selMode) clearSelection();
+}
+
+function bulkAssignSelected() {
+  if (!selectedWells.size) return;
+  document.getElementById('bulkCount').textContent = selectedWells.size + ' well' + (selectedWells.size!==1?'s':'');
+  document.getElementById('bName').value = '';
+  document.getElementById('bMedia').value = 'Default';
+  selectBulkType('strain');
+  document.getElementById('bulkModal').classList.add('open');
+}
+
+function setActiveType(t) {
+  activeType = t;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('tb-'+t).classList.add('selected');
+}
+
+// ══════════════════════════════════════════════════════════
+// WELL MODAL
+// ══════════════════════════════════════════════════════════
+let modalType = 'strain';
+
+function openModal(key) {
+  activeWell = key;
+  const d = wellData[key] || {};
+  document.getElementById('mWellKey').textContent = key;
+  selectModalType(d.type || 'strain');
+  document.getElementById('mMedia').value = d.media || 'Default';
+  document.getElementById('mName').value = d.name || '';
+  document.getElementById('mRep').value = d.rep || 1;
+  document.getElementById('wellModal').classList.add('open');
+  setTimeout(() => document.getElementById('mName').focus(), 50);
+}
+
+function selectModalType(t) {
+  modalType = t;
+  document.querySelectorAll('[id^="mt-"]').forEach(el => el.classList.remove('sel'));
+  document.getElementById('mt-'+t).classList.add('sel');
+  const ng = document.getElementById('mNameGroup');
+  const lbl = document.getElementById('mNameLabel');
+  if (t === 'strain') {
+    ng.style.display = 'block';
+    lbl.textContent = entityLabel(false) + ' / isolate ID';
+  } else if (t === 'pos') {
+    ng.style.display = 'block';
+    lbl.textContent = 'Control label (optional)';
+  } else {
+    ng.style.display = 'none';
+  }
+}
+
+function saveWell() {
+  if (!activeWell) return;
+  const name = document.getElementById('mName').value.trim();
+  const media = document.getElementById('mMedia').value.trim() || 'Default';
+  const rep = parseInt(document.getElementById('mRep').value) || 1;
+  wellData[activeWell] = {type: modalType, name, rep, media};
+  closeModal();
+  refreshPlate();
+}
+
+function clearWell() {
+  if (activeWell) { delete wellData[activeWell]; closeModal(); refreshPlate(); }
+}
+
+function closeModal() {
+  document.getElementById('wellModal').classList.remove('open');
+  activeWell = null;
+}
+
+document.getElementById('wellModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('wellModal')) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeBulkModal(); }
+  if (e.key === 'Enter' && document.getElementById('wellModal').classList.contains('open')) {
+    e.preventDefault(); saveWell();
+  }
+});
+
+// ══════════════════════════════════════════════════════════
+// BULK MODAL
+// ══════════════════════════════════════════════════════════
+let bulkType = 'strain';
+
+function selectBulkType(t) {
+  bulkType = t;
+  document.querySelectorAll('[id^="bt-"]').forEach(el => el.classList.remove('sel'));
+  document.getElementById('bt-'+t).classList.add('sel');
+  document.getElementById('bNameGroup').style.display = (t==='strain'||t==='pos') ? 'block' : 'none';
+}
+
+function saveBulk() {
+  const name = document.getElementById('bName').value.trim();
+  const media = document.getElementById('bMedia').value.trim() || 'Default';
+  const autoRep = document.getElementById('bAutoRep').value === 'yes';
+  const wellsArr = Array.from(selectedWells);
+  wellsArr.forEach((k, i) => {
+    wellData[k] = {type: bulkType, name, rep: autoRep ? i+1 : 1, media};
+  });
+  closeBulkModal();
+  clearSelection();
+  if (selMode) toggleSelMode();
+  refreshPlate();
+}
+
+function closeBulkModal() {
+  document.getElementById('bulkModal').classList.remove('open');
+}
+
+document.getElementById('bulkModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('bulkModal')) closeBulkModal();
+});
+
+function clearAllWells() {
+  if (!confirm('Clear all well assignments?')) return;
+  wellData = {};
+  refreshPlate();
+}
+
+// ══════════════════════════════════════════════════════════
+// TECAN PARSER
+// ══════════════════════════════════════════════════════════
+function parseTecan(arrayBuffer) {
+  const wb = XLSX.read(new Uint8Array(arrayBuffer), {type:'array'});
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  const raw = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+
+  const info = {};
+  let gridRow = -1, gridCol = -1;
+
+  for (let r = 0; r < raw.length; r++) {
+    for (let c = 0; c < (raw[r]||[]).length; c++) {
+      if (String(raw[r][c]).trim() === '<>') { gridRow = r; gridCol = c; break; }
+    }
+    if (gridRow >= 0) break;
+
+    const k = String(raw[r][0]||'').trim();
+    if (k === 'Device:') info.device = String(raw[r][1]||'').trim();
+    if (k === 'Measurement Wavelength') info.wavelength = (raw[r][1]||'') + ' nm';
+    if (k === 'Date:') info.date = formatExcelDate(raw[r][1]);
+    if (k === 'Time:') info.time = String(raw[r][1]||'');
+    if (String(raw[r][0]||'').includes('Temperature:'))
+      info.temp = String(raw[r][0]).replace(/.*Temperature:\s*/,'').trim();
+  }
+
+  if (gridRow < 0) throw new Error('Could not find plate grid (no "<>" anchor). Check file format.');
+
+  const grid = {};
+  ROWS.forEach((row, ri) => {
+    COLS.forEach((col, ci) => {
+      const dataRow = raw[gridRow + 1 + ri];
+      const val = dataRow ? parseFloat(dataRow[gridCol + 1 + ci]) : NaN;
+      grid[row + col] = isNaN(val) ? null : +val.toFixed(4);
+    });
+  });
+
+  return {grid, info};
+}
+
+function formatExcelDate(v) {
+  if (!v) return '';
+  if (typeof v === 'number') {
+    const d = new Date(Math.round((v - 25569) * 86400 * 1000));
+    return d.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
+  }
+  return String(v);
+}
+
+function setupUpload(dzId, inputId, key, stId, mtId) {
+  const dz = document.getElementById(dzId);
+  const inp = document.getElementById(inputId);
+
+  inp.addEventListener('change', () => { if (inp.files[0]) loadFile(inp.files[0], key, stId, mtId); });
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('drag');
+    const f = e.dataTransfer.files[0];
+    if (f) { inp.files = e.dataTransfer.files; loadFile(f, key, stId, mtId); }
+  });
+}
+
+function loadFile(f, key, stId, mtId) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const res = parseTecan(e.target.result);
+      grids[key] = res.grid;
+      tecanMeta[key] = res.info;
+      document.getElementById(stId).innerHTML = `<div class="upload-status ok">✓ ${f.name}</div>`;
+      const m = res.info;
+      document.getElementById(mtId).innerHTML =
+        `<div class="upload-meta">` +
+        (m.device ? `<b>Device:</b> ${m.device}<br>` : '') +
+        (m.wavelength ? `<b>λ:</b> ${m.wavelength} &nbsp; ` : '') +
+        (m.date ? `<b>Date:</b> ${m.date} &nbsp; ` : '') +
+        (m.time ? `<b>Time:</b> ${m.time}<br>` : '') +
+        (m.temp ? `<b>Temp:</b> ${m.temp}` : '') +
+        `</div>`;
+      checkLoaded();
+    } catch(err) {
+      document.getElementById(stId).innerHTML = `<div class="upload-status err">✗ ${err.message}</div>`;
+    }
+  };
+  reader.readAsArrayBuffer(f);
+}
+
+function checkLoaded() {
+  const ok = mode === 'sbf' ? !!(grids.od600 && grids.od570) : !!grids.od570;
+  document.getElementById('btnCalc').disabled = !ok;
+}
+
+setupUpload('dz600','f600','od600','st600','mt600');
+setupUpload('dz570','f570','od570','st570','mt570');
+
+// ══════════════════════════════════════════════════════════
+// CALCULATE
+// ══════════════════════════════════════════════════════════
+function calculate() {
+  const useSBF = mode === 'sbf';
+  const tw = parseFloat(document.getElementById(useSBF?'tw':'ti_w').value) || (useSBF?0.5:25);
+  const tm = parseFloat(document.getElementById(useSBF?'tm':'ti_m').value) || (useSBF?1.0:50);
+  const ts = parseFloat(document.getElementById(useSBF?'ts':'ti_s').value) || (useSBF?2.0:75);
+  const avg = a => a.reduce((x,y)=>x+y,0)/a.length;
+  const std = a => {
+    if (a.length < 2) return 0;
+    const m = avg(a);
+    return Math.sqrt(a.map(x=>(x-m)**2).reduce((s,v)=>s+v,0)/(a.length-1));
+  };
+
+  // 1. Group blanks by media (OD600 only collected/used in SBF mode)
+  const mediaBlanks = {};
+  let totalBlanks = 0;
+  Object.keys(wellData).forEach(k => {
+    if (wellData[k].type === 'blank') {
+      const media = wellData[k].media || 'Default';
+      if (!mediaBlanks[media]) mediaBlanks[media] = {od570:[], od600:[]};
+      if (grids.od570[k] != null) mediaBlanks[media].od570.push(grids.od570[k]);
+      if (useSBF && grids.od600 && grids.od600[k] != null) mediaBlanks[media].od600.push(grids.od600[k]);
+      totalBlanks++;
+    }
+  });
+
+  const blankMeans = {};
+  Object.keys(mediaBlanks).forEach(m => {
+    blankMeans[m] = {
+      od570: mediaBlanks[m].od570.length ? avg(mediaBlanks[m].od570) : 0,
+      od600: mediaBlanks[m].od600.length ? avg(mediaBlanks[m].od600) : 0
+    };
+  });
+
+  // 1.5 Group Positive Controls by media for % Inhibition (OD570 only, both modes)
+  const mediaPos = {};
+  Object.keys(wellData).forEach(k => {
+    if (wellData[k].type === 'pos' && grids.od570[k] != null) {
+      const media = wellData[k].media || 'Default';
+      if (!mediaPos[media]) mediaPos[media] = [];
+      mediaPos[media].push(grids.od570[k]);
+    }
+  });
+  const posMeansRaw = {};
+  Object.keys(mediaPos).forEach(m => {
+    posMeansRaw[m] = mediaPos[m].length ? avg(mediaPos[m]) : null;
+  });
+
+  // 2. Group strain/control wells by name AND media
+  // In SBF mode both OD600 and OD570 are required per well; in Antibiofilm mode only OD570 is required.
+  const groupedData = {};
+  Object.keys(wellData).forEach(k => {
+    const d = wellData[k];
+    const has570 = grids.od570[k] != null;
+    const has600 = !useSBF || (grids.od600 && grids.od600[k] != null);
+    if ((d.type === 'strain' || d.type === 'pos' || d.type === 'neg') && has570 && has600) {
+      const label = d.name || (d.type==='pos'?'Pos ctrl':'Neg ctrl');
+      const media = d.media || 'Default';
+      const key = `${d.type}::${label}::${media}`;
+
+      if (!groupedData[key]) {
+        groupedData[key] = {type: d.type, name: label, media, od600:[], od570:[], wells:[]};
+      }
+      if (useSBF) groupedData[key].od600.push(grids.od600[k]);
+      groupedData[key].od570.push(grids.od570[k]);
+      groupedData[key].wells.push(k);
+    }
+  });
+
+  // classify() operates on whichever metric is active: SBF index, or % Inhibition
+  function classify(val) {
+    if (val == null) return {cls:'—', bi:-1};
+    if (val >= ts) return {cls: useSBF ? 'Strong' : 'Strong inhibition', bi:3};
+    if (val >= tm) return {cls: useSBF ? 'Moderate' : 'Moderate inhibition', bi:2};
+    if (val >= tw) return {cls: useSBF ? 'Weak' : 'Weak inhibition', bi:1};
+    return {cls: useSBF ? 'Non-biofilm' : 'No/low inhibition', bi:0};
+  }
+
+  const results = [];
+
+  Object.values(groupedData).forEach(d => {
+    const m570 = avg(d.od570), sd570 = std(d.od570);
+    const m600 = useSBF ? avg(d.od600) : null;
+    const sd600 = useSBF ? std(d.od600) : null;
+
+    // Get corresponding blanks for this media
+    const bMean570 = blankMeans[d.media] ? blankMeans[d.media].od570 : 0;
+    const bMean600 = useSBF ? (blankMeans[d.media] ? blankMeans[d.media].od600 : 0) : null;
+
+    // SBF calculation with OD600 correction — SBF mode only
+    let sbf = null;
+    if (useSBF) {
+      const corrected600 = m600 - bMean600;
+      sbf = corrected600 > 0.0001 ? (m570 - bMean570) / corrected600 : null;
+    }
+
+    // % Inhibition Calculation: blank-corrected strain OD570 vs blank-corrected Pos Ctrl OD570 — always OD570-only
+    const pMean570Raw = posMeansRaw[d.media];
+    let pctInhibition = null;
+    if (d.type === 'strain' && pMean570Raw != null) {
+        const correctedStrain570 = m570 - bMean570;
+        const correctedPos570 = pMean570Raw - bMean570;
+        if (correctedPos570 > 0.0001) {
+            pctInhibition = 100 - ((correctedStrain570 / correctedPos570) * 100);
+        }
+    }
+
+    let clsName = d.type === 'pos' ? 'Pos ctrl' : (d.type === 'neg' ? 'Neg ctrl' : '');
+    let biFlag = d.type === 'pos' ? 4 : (d.type === 'neg' ? 5 : null);
+
+    if (d.type === 'strain') {
+      const metric = useSBF ? sbf : pctInhibition;
+      const classRes = classify(metric);
+      clsName = classRes.cls;
+      biFlag = classRes.bi;
+    }
+
+    results.push({
+      name: d.name, media: d.media, rowType: d.type, n:d.od570.length,
+      m600, m570, sd600, sd570, bMean600, bMean570, sbf, pctInhibition, cls: clsName, bi: biFlag, wells:d.wells
+    });
+  });
+
+  // Sort strains first, by the active metric descending
+  results.sort((a,b) => {
+    if (a.rowType === 'strain' && b.rowType !== 'strain') return -1;
+    if (a.rowType !== 'strain' && b.rowType === 'strain') return 1;
+    const av = useSBF ? (a.sbf??-99) : (a.pctInhibition??-99);
+    const bv = useSBF ? (b.sbf??-99) : (b.pctInhibition??-99);
+    return bv - av;
+  });
+
+  lastResults = results;
+  lastCalcParams = {tw, tm, ts};
+  renderResults(results, blankMeans, totalBlanks, tw, tm, ts);
+  goTo(2);
+}
+
+// ══════════════════════════════════════════════════════════
+// RENDER RESULTS
+// ══════════════════════════════════════════════════════════
+function renderResults(results, blankMeans, nBlanks, tw, tm, ts) {
+  const useSBF = mode === 'sbf';
+  const strains = results.filter(r=>r.rowType==='strain');
+  const cnt = [0,0,0,0];
+  strains.forEach(r => { if(r.bi>=0&&r.bi<=3) cnt[r.bi]++; });
+  const numMedia = Object.keys(blankMeans).length;
+  lastSummary = {numMedia, nBlanks, strainsCount: strains.length};
+
+  const catLabels = useSBF
+    ? ['Non-biofilm','Weak biofilm','Moderate biofilm','Strong biofilm']
+    : ['No/low inhibition','Weak inhibition','Moderate inhibition','Strong inhibition'];
+  const metricLabel = useSBF ? 'Highest SBF' : 'Highest % Inhibition';
+  const bestVal = useSBF
+    ? (strains[0]?.sbf!=null ? strains[0].sbf.toFixed(2) : '—')
+    : (strains[0]?.pctInhibition!=null ? strains[0].pctInhibition.toFixed(1)+'%' : '—');
+
+  document.getElementById('resTitle').textContent = useSBF ? 'SBF Results' : 'Antibiofilm Results';
+  document.getElementById('resultsSub').textContent =
+    `${strains.length} ${entityLabel(true).toLowerCase()} grouped in ${numMedia} media condition(s) · ${nBlanks} total blank wells`;
+
+  document.getElementById('statsCard').innerHTML = `
+    <div class="card-title"><span class="badge-num">✓</span> Summary</div>
+    <div class="results-grid">
+      <div class="stat-card"><div class="sv">${strains.length}</div><div class="sl">${entityLabel(true)} analysed</div></div>
+      <div class="stat-card"><div class="sv">${numMedia}</div><div class="sl">Media condition(s)</div></div>
+      <div class="stat-card"><div class="sv">${nBlanks}</div><div class="sl">Total blank wells</div></div>
+      <div class="stat-card"><div class="sv">${bestVal}</div><div class="sl">${metricLabel}</div></div>
+      <div class="stat-card" style="background:var(--red-bg)"><div class="sv" style="color:var(--red)">${cnt[3]}</div><div class="sl">${catLabels[3]}</div></div>
+      <div class="stat-card" style="background:#fce7f3"><div class="sv" style="color:#be185d">${cnt[2]}</div><div class="sl">${catLabels[2]}</div></div>
+      <div class="stat-card" style="background:var(--orange-bg)"><div class="sv" style="color:var(--orange)">${cnt[1]}</div><div class="sl">${catLabels[1]}</div></div>
+      <div class="stat-card" style="background:var(--surface2)"><div class="sv" style="color:var(--text3)">${cnt[0]}</div><div class="sl">${catLabels[0]}</div></div>
+    </div>
+  `;
+
+  // Chart
+  document.getElementById('chartTitle').textContent = useSBF ? `SBF Index by ${entityLabel(false).toLowerCase()}` : `% Inhibition by ${entityLabel(false).toLowerCase()}`;
+  const strainResults = results.filter(r=>r.rowType==='strain');
+  const labels = strainResults.map(r=> numMedia > 1 ? `${r.name} (${r.media})` : r.name);
+  const vals   = strainResults.map(r=> {
+    const v = useSBF ? r.sbf : r.pctInhibition;
+    return v!=null ? +v.toFixed(3) : 0;
+  });
+  const colMap = ['#93c5fd','#fde047','#f9a8d4','#fca5a5'];
+  const brdMap = ['#3b82f6','#ca8a04','#ec4899','#dc2626'];
+  const bgs  = strainResults.map(r=>colMap[Math.min(r.bi,3)]||'#93c5fd');
+  const brds = strainResults.map(r=>brdMap[Math.min(r.bi,3)]||'#3b82f6');
+
+  const h = Math.max(200, labels.length*34+80);
+  document.getElementById('chartWrap').style.height = h+'px';
+  if (sbfChart) sbfChart.destroy();
+  const metricAxisLabel = useSBF ? 'SBF Index' : '% Inhibition';
+  sbfChart = new Chart(document.getElementById('sbfChart'), {
+    type:'bar',
+    data:{labels, datasets:[{
+      label:metricAxisLabel, data:vals,
+      backgroundColor:bgs, borderColor:brds, borderWidth:1.5, borderRadius:3
+    }]},
+    options:{
+      indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label: c => useSBF ? ` SBF: ${c.parsed.x.toFixed(3)}` : ` Inhibition: ${c.parsed.x.toFixed(1)}%`}}
+      },
+      scales:{
+        x:{title:{display:true, text:metricAxisLabel, font:{size:11}}, grid:{color:'rgba(0,0,0,.06)'}, ticks:{font:{size:10}}},
+        y:{ticks:{font:{size:10}, autoSkip:false}}
+      }
+    }
+  });
+
+  Chart.register({
+    id: 'threshLines',
+    afterDraw(chart) {
+      const {ctx, chartArea, scales} = chart;
+      if (!chartArea) return;
+      [[tw,'#d97706'],[tm,'#ec4899'],[ts,'#dc2626']].forEach(([val, color]) => {
+        const x = scales.x.getPixelForValue(val);
+        if (x < chartArea.left || x > chartArea.right) return;
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash([4,3]);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.2;
+        ctx.globalAlpha = .65;
+        ctx.moveTo(x, chartArea.top);
+        ctx.lineTo(x, chartArea.bottom);
+        ctx.stroke();
+        ctx.restore();
+      });
+    }
+  });
+
+  const unit = useSBF ? '' : '%';
+  document.getElementById('chartLegend').innerHTML =
+    `<span><span class="ld" style="background:#fca5a5;border-radius:2px"></span>${catLabels[3]} (≥${ts}${unit})</span>` +
+    `<span><span class="ld" style="background:#f9a8d4;border-radius:2px"></span>${catLabels[2]} (≥${tm}${unit})</span>` +
+    `<span><span class="ld" style="background:#fde047;border-radius:2px"></span>${catLabels[1]} (≥${tw}${unit})</span>` +
+    `<span><span class="ld" style="background:#93c5fd;border-radius:2px"></span>${catLabels[0]}</span>` +
+    `<span style="color:var(--orange)">- - - threshold lines</span>`;
+
+  // Table
+  const tbody = document.getElementById('resultsTbody');
+  tbody.innerHTML = '';
+  const pillClass = {
+    0:'p-none', 1:'p-weak', 2:'p-mod', 3:'p-str', 4:'p-pos', 5:'p-neg'
+  };
+  results.forEach(r => {
+    const tr = document.createElement('tr');
+    const sdNote570 = r.n>1 ? ` <span style="color:var(--text3);font-size:10px">(±${r.sd570.toFixed(3)})</span>` : '';
+    const sdNote600 = (r.n>1 && r.sd600!=null) ? ` <span style="color:var(--text3);font-size:10px">(±${r.sd600.toFixed(3)})</span>` : '';
+    const inhibDisplay = r.pctInhibition != null ? r.pctInhibition.toFixed(1) + '%' : '—';
+
+    tr.innerHTML = `
+      <td><b>${r.name}</b><br><span style="font-size:10px;color:var(--text3)">${r.wells.join(', ')}</span></td>
+      <td><span class="pill" style="background:${r.rowType==='pos'?'var(--green-bg)':r.rowType==='neg'?'var(--teal-bg)':'var(--surface2)'};color:${r.rowType==='pos'?'var(--green)':r.rowType==='neg'?'var(--teal)':'var(--text3)'}">${typeLabel(r.rowType)}</span></td>
+      <td><span class="pill p-none" style="background:var(--accent-light);color:var(--accent2)">${r.media}</span></td>
+      <td class="r">${r.n}</td>
+      <td class="r sbf-only">${r.m600!=null?r.m600.toFixed(3):'—'}${sdNote600}</td>
+      <td class="r">${r.m570.toFixed(3)}${sdNote570}</td>
+      <td class="r sbf-only" style="color:var(--text3)">${r.bMean600!=null?r.bMean600.toFixed(3):'—'}</td>
+      <td class="r" style="color:var(--text3)">${r.bMean570.toFixed(3)}</td>
+      <td class="r sbf-only" style="font-weight:600">${r.sbf!=null?r.sbf.toFixed(3):'—'}</td>
+      <td class="r" style="font-weight:600;color:var(--accent2)">${inhibDisplay}</td>
+      <td><span class="pill ${pillClass[r.bi]||'p-none'}">${r.cls}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  buildHeatmap(results);
+}
+
+function buildHeatmap(results) {
+  const useSBF = mode === 'sbf';
+  const wellMetric = {};
+  const wellCls = {};
+  results.forEach(r => {
+    r.wells.forEach(k => {
+      wellMetric[k] = useSBF ? r.sbf : r.pctInhibition;
+      wellCls[k] = {cls:r.cls, rowType:r.rowType, bi:r.bi};
+    });
+  });
+
+  document.getElementById('heatmapTitle').textContent = useSBF
+    ? 'Plate heatmap — SBF classification'
+    : 'Plate heatmap — % Inhibition classification';
+
+  const catLabels = useSBF
+    ? ['Non-biofilm','Weak','Moderate','Strong']
+    : ['No/low inhib.','Weak inhib.','Moderate inhib.','Strong inhib.'];
+  document.getElementById('heatmapLegend').innerHTML =
+    `<span><span class="ld" style="background:#f1f5f9;border:1px solid #e2e8f0"></span>Blank / empty</span>` +
+    `<span><span class="ld" style="background:#dbeafe"></span>${catLabels[0]}</span>` +
+    `<span><span class="ld" style="background:#fef3c7"></span>${catLabels[1]}</span>` +
+    `<span><span class="ld" style="background:#fce7f3"></span>${catLabels[2]}</span>` +
+    `<span><span class="ld" style="background:#fee2e2"></span>${catLabels[3]}</span>` +
+    `<span><span class="ld" style="background:#d1fae5"></span>Positive ctrl</span>` +
+    `<span><span class="ld" style="background:#e0f2fe"></span>Negative ctrl</span>`;
+
+  const tbl = document.getElementById('heatmapTable');
+  tbl.innerHTML = '';
+  const hdr = tbl.insertRow();
+  const corner = document.createElement('th'); corner.className='row-hdr'; hdr.appendChild(corner);
+  COLS.forEach(c => { const th=document.createElement('th'); th.textContent=c; hdr.appendChild(th); });
+
+  const heatColors = {
+    0: {wc:'#dbeafe', wb:'#93c5fd', wt:'#1e3a6e'},
+    1: {wc:'#fef3c7', wb:'#fde047', wt:'#713f12'},
+    2: {wc:'#fce7f3', wb:'#f9a8d4', wt:'#831843'},
+    3: {wc:'#fee2e2', wb:'#fca5a5', wt:'#7f1d1d'},
+    4: {wc:'#dcfce7', wb:'#86efac', wt:'#14532d'},
+    5: {wc:'#e0f2fe', wb:'#7dd3fc', wt:'#0c4a6e'},
+  };
+
+  ROWS.forEach(row => {
+    const tr = tbl.insertRow();
+    const rh = document.createElement('th'); rh.className='row-hdr'; rh.textContent=row; tr.appendChild(rh);
+    COLS.forEach(col => {
+      const key = row+col;
+      const td = document.createElement('td');
+      td.className = 'well';
+      td.style.cursor = 'default';
+
+      const wd = wellData[key];
+      const cls = wellCls[key];
+      const metric = wellMetric[key];
+
+      let css = TYPE_CSS['empty'];
+      let label = '';
+      let sublabel = '';
+
+      if (wd && wd.type === 'blank') {
+        css = TYPE_CSS['blank'];
+        label = wd.media !== 'Default' ? wd.media : 'blank';
+        sublabel = grids.od570[key]!=null ? grids.od570[key].toFixed(3) : '';
+      } else if (cls) {
+        css = heatColors[cls.bi] || TYPE_CSS['empty'];
+        label = wd?.name || '';
+        sublabel = metric!=null ? (useSBF ? metric.toFixed(2) : metric.toFixed(1)+'%') : '';
+      } else if (wd && (wd.type==='pos'||wd.type==='neg')) {
+        css = wd.type==='pos' ? heatColors[4] : heatColors[5];
+        label = wd.type==='pos'?'pos':'neg';
+      }
+
+      td.style.setProperty('--wc', css.wc);
+      td.style.setProperty('--wb', css.wb);
+      td.style.setProperty('--wt', css.wt);
+      td.innerHTML = `
+        <span class="well-id">${key}</span>
+        <span class="well-name">${label}</span>
+        <span class="well-rep" style="font-size:9px;font-weight:600">${sublabel}</span>
+      `;
+      tr.appendChild(td);
+    });
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// EXPORTING (CSV, PDF, JPEG)
+// ══════════════════════════════════════════════════════════
+function downloadCSV() {
+  const useSBF = mode === 'sbf';
+  const header = useSBF
+    ? [entityLabel(false)+'/ID','Type','Media','Wells','n','Mean_OD600','SD_OD600','Mean_OD570','SD_OD570','Blank_OD600','Blank_OD570','SBF_Index','Pct_Inhibition','Classification']
+    : [entityLabel(false)+'/ID','Type','Media','Wells','n','Mean_OD570','SD_OD570','Blank_OD570','Pct_Inhibition','Classification'];
+  const rows = [header];
+  lastResults.forEach(r => {
+    const row = useSBF
+      ? [r.name, r.rowType, r.media, r.wells.join(';'), r.n,
+         r.m600.toFixed(4), r.sd600.toFixed(4),
+         r.m570.toFixed(4), r.sd570.toFixed(4),
+         r.bMean600.toFixed(4), r.bMean570.toFixed(4),
+         r.sbf!=null?r.sbf.toFixed(4):'',
+         r.pctInhibition!=null?r.pctInhibition.toFixed(2):'',
+         r.cls]
+      : [r.name, r.rowType, r.media, r.wells.join(';'), r.n,
+         r.m570.toFixed(4), r.sd570.toFixed(4),
+         r.bMean570.toFixed(4),
+         r.pctInhibition!=null?r.pctInhibition.toFixed(2):'',
+         r.cls];
+    rows.push(row);
+  });
+  const csv = rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'BiofilmQ-HT_' + (useSBF ? 'SBF_results.csv' : 'Antibiofilm_results.csv');
+  a.click();
+}
+
+// ══════════════════════════════════════════════════════════
+// PER-CARD IMAGE CAPTURE
+// ══════════════════════════════════════════════════════════
+async function captureElement(id) {
+  const element = document.getElementById(id);
+
+  // Hide action buttons temporarily to keep the capture clean
+  const actionBtns = element.querySelectorAll('.action-btn');
+  actionBtns.forEach(btn => btn.style.display = 'none');
+
+  // Temporarily expand any scrollable regions (e.g. the results table body)
+  // so the full content is captured, not just the visible scroll window.
+  const scrollWraps = element.querySelectorAll('[data-scroll-capture]');
+  const prevStyles = [];
+  scrollWraps.forEach(w => {
+    prevStyles.push({el: w, maxHeight: w.style.maxHeight, overflowY: w.style.overflowY});
+    w.style.maxHeight = 'none';
+    w.style.overflowY = 'visible';
+  });
+
+  await new Promise(r => setTimeout(r, 80));
+
+  const canvas = await html2canvas(element, {
+    scale: 2,
+    backgroundColor: '#ffffff',
+    logging: false
+  });
+
+  actionBtns.forEach(btn => btn.style.display = '');
+  prevStyles.forEach(p => { p.el.style.maxHeight = p.maxHeight; p.el.style.overflowY = p.overflowY; });
+
+  return canvas;
+}
+
+async function downloadCardImage(elementId, filenameBase) {
+  const canvas = await captureElement(elementId);
+  const dataURL = canvas.toDataURL('image/png');
+  const a = document.createElement('a');
+  a.href = dataURL;
+  a.download = `BiofilmQ-HT_${filenameBase}_${mode==='sbf'?'SBF':'Antibiofilm'}.png`;
+  a.click();
+}
+
+// ══════════════════════════════════════════════════════════
+// PUBLICATION-READY PDF REPORT
+// Letterhead-style header/footer repeated on every page, numbered
+// section badges, a native vector results table (crisp text, not a
+// screenshot), and captioned figures for the chart & plate heatmap.
+// ══════════════════════════════════════════════════════════
+const RPT = {
+  accent: [29,78,216],
+  accentBand: [219,234,254],
+  textDark: [17,24,39],
+  textMed: [75,85,99],
+  textLight: [156,163,175],
+  border: [221,226,238],
+  zebra: [245,247,251],
+};
+
+function clsColor(bi) {
+  const map = {0:[30,64,110], 1:[146,64,14], 2:[131,24,67], 3:[127,29,29], 4:[6,95,70], 5:[12,74,110]};
+  return map[bi] ?? [55,65,81];
+}
+
+async function generateReport() {
+  if (!lastResults.length) { alert('Please run "Calculate" first — there are no results to report yet.'); return; }
+
+  const btn = document.getElementById('btnReport');
+  const origLabel = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Building report…';
+
+  try {
+    const useSBF = mode === 'sbf';
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('l', 'mm', 'a4'); // landscape — comfortably fits wide data tables & the plate heatmap
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const margin = 15;
+    const HEADER_H = 22;
+    const FOOTER_ZONE = 15;
+    const contentTop = HEADER_H + 7;
+    const contentBottom = pageH - FOOTER_ZONE;
+    let y = contentTop;
+
+    function drawPageHeader() {
+      pdf.setFillColor(...RPT.accent);
+      pdf.rect(0, 0, pageW, HEADER_H, 'F');
+      // small brand mark — 3x3 dot grid, echoing the app logo
+      const gap = 3.3, baseX = margin + 1.6, baseY = HEADER_H/2 - gap;
+      pdf.setFillColor(255,255,255);
+      for (let r=0;r<3;r++) for (let c=0;c<3;c++) pdf.circle(baseX + c*gap, baseY + r*gap, 1.05, 'F');
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(14); pdf.setTextColor(255,255,255);
+      pdf.text(useSBF ? 'BiofilmQ-HT · SBF Biofilm Assay Report' : 'BiofilmQ-HT · Antibiofilm Activity Report', margin + 15, HEADER_H/2 - 1.5);
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(8.5); pdf.setTextColor(...RPT.accentBand);
+      pdf.text(useSBF ? 'Specific Biofilm Formation · crystal violet (OD570) normalized to growth (OD600)'
+                       : '% Biofilm Inhibition · crystal violet (OD570) vs. untreated positive control',
+                margin + 15, HEADER_H/2 + 4.5);
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(8.5); pdf.setTextColor(...RPT.accentBand);
+      pdf.text(`Generated ${new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}`,
+                pageW - margin, HEADER_H/2 + 1, {align:'right'});
+    }
+
+    function newPage() {
+      pdf.addPage();
+      drawPageHeader();
+      return contentTop;
+    }
+
+    function ensureSpace(h) {
+      if (y + h > contentBottom) y = newPage();
+    }
+
+    let sectionNum = 0;
+    function sectionHeading(text) {
+      sectionNum++;
+      ensureSpace(11);
+      pdf.setFillColor(...RPT.accent);
+      pdf.roundedRect(margin, y - 4.6, 6.4, 6.4, 1.3, 1.3, 'F');
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(8.5); pdf.setTextColor(255,255,255);
+      pdf.text(String(sectionNum), margin + 3.2, y - 0.9, {align:'center'});
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(12.5); pdf.setTextColor(...RPT.textDark);
+      pdf.text(text, margin + 10, y);
+      y += 8;
+    }
+    function bodyText(text, size=9.5, color=RPT.textMed) {
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(size); pdf.setTextColor(...color);
+      const lines = pdf.splitTextToSize(text, pageW - margin*2);
+      lines.forEach(line => {
+        ensureSpace(size*0.42 + 1.6);
+        pdf.text(line, margin, y);
+        y += size*0.42 + 1.6;
+      });
+      y += 1.5;
+    }
+    function ruleLine() {
+      ensureSpace(4);
+      pdf.setDrawColor(...RPT.border);
+      pdf.line(margin, y, pageW - margin, y);
+      y += 5;
+    }
+    function caption(text) {
+      ensureSpace(6);
+      pdf.setFont('helvetica','italic'); pdf.setFontSize(8.5); pdf.setTextColor(...RPT.textLight);
+      pdf.text(text, margin, y);
+      y += 6;
+    }
+
+    // Native vector table renderer — crisp text, not a screenshot.
+    function drawTable(columns, rows) {
+      const width = pageW - margin*2;
+      const totalWeight = columns.reduce((s,c)=>s+c.weight,0);
+      const colWidths = columns.map(c => c.weight/totalWeight*width);
+      const headerH = 8, rowH = 7;
+
+      function headerRow() {
+        pdf.setFillColor(...RPT.accent);
+        pdf.rect(margin, y, width, headerH, 'F');
+        pdf.setFont('helvetica','bold'); pdf.setFontSize(7.8); pdf.setTextColor(255,255,255);
+        let cx = margin;
+        columns.forEach((col,i) => {
+          const a = col.align || 'left';
+          const tx = a==='right' ? cx+colWidths[i]-2.2 : a==='center' ? cx+colWidths[i]/2 : cx+2.2;
+          pdf.text(col.header, tx, y+headerH-2.7, {align:a});
+          cx += colWidths[i];
+        });
+        y += headerH;
+      }
+
+      ensureSpace(headerH + rowH);
+      headerRow();
+
+      rows.forEach((row, ri) => {
+        if (y + rowH > contentBottom) { y = newPage(); headerRow(); }
+        if (ri % 2 === 1) { pdf.setFillColor(...RPT.zebra); pdf.rect(margin, y, width, rowH, 'F'); }
+        let cx = margin;
+        columns.forEach((col,i) => {
+          const val = col.format ? col.format(row) : String(row[col.key] ?? '');
+          const a = col.align || 'left';
+          const tx = a==='right' ? cx+colWidths[i]-2.2 : a==='center' ? cx+colWidths[i]/2 : cx+2.2;
+          if (col.colorFn) { const c = col.colorFn(row); pdf.setTextColor(...c); pdf.setFont('helvetica','bold'); }
+          else { pdf.setTextColor(55,65,81); pdf.setFont('helvetica','normal'); }
+          pdf.setFontSize(7.6);
+          const clipped = pdf.splitTextToSize(val, colWidths[i]-4)[0] || '';
+          pdf.text(clipped, tx, y+rowH-2.4, {align:a});
+          cx += colWidths[i];
+        });
+        y += rowH;
+      });
+      pdf.setDrawColor(...RPT.border);
+    }
+
+    // Figure block — captures a live card as an image, frames it, adds a caption.
+    // Fits the image within whichever of (available width) or (available height) is
+    // more constraining, so a very tall chart (many rows) is scaled by height on a
+    // fresh page rather than being shrunk to a tiny thumbnail trying to keep full width.
+    const CAPTION_RESERVE = 7; // mm reserved below the image for its caption line
+    async function figureBlock(elementId, captionText) {
+      const canvas = await captureElement(elementId);
+      const naturalW = canvas.width, naturalH = canvas.height;
+      const maxW = pageW - margin*2;
+
+      // Try to fit in the space remaining on the current page first.
+      let availH = contentBottom - y - CAPTION_RESERVE;
+      let hAtFullWidth = naturalH * maxW / naturalW;
+
+      // Only reuse leftover space on the current page if the image would use at least
+      // ~55% of its natural (full-width) height there — otherwise it becomes a tiny,
+      // hard-to-read thumbnail. In that case, start a fresh page instead.
+      if (availH < hAtFullWidth * 0.55) {
+        y = newPage();
+        availH = contentBottom - y - CAPTION_RESERVE;
+      }
+
+      // Fit within (maxW x availH), preserving aspect ratio, constrained by whichever
+      // dimension is tighter.
+      let w = maxW, h = naturalH * w / naturalW;
+      if (h > availH) {
+        h = availH;
+        w = naturalW * h / naturalH;
+      }
+      const x = margin + (maxW - w) / 2; // center horizontally if narrower than full width
+
+      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', x, y, w, h);
+      pdf.setDrawColor(...RPT.border);
+      pdf.rect(x, y, w, h);
+      y += h + 4;
+      caption(captionText);
+    }
+
+    // ══ PAGE 1 ══
+    drawPageHeader();
+
+    sectionHeading('Methodology');
+    if (useSBF) {
+      bodyText('Biofilm biomass was quantified by crystal violet staining (OD570) and normalized to bacterial growth (OD600). Specific Biofilm Formation (SBF) Index was calculated as: SBF = (OD570 sample - OD570 blank) / (OD600 sample - OD600 blank). Wells were grouped by strain/condition and media condition, with blank subtraction performed per matching media condition.');
+      bodyText(`Classification thresholds applied — Weak biofilm: SBF >= ${lastCalcParams.tw}; Moderate biofilm: SBF >= ${lastCalcParams.tm}; Strong biofilm: SBF >= ${lastCalcParams.ts}; below the weak threshold, wells were classed Non-biofilm.`);
+    } else {
+      bodyText('Antibiofilm activity was quantified using crystal violet-stained biofilm biomass (OD570) only. For each strain/condition, blank-corrected OD570 was compared against the blank-corrected untreated Positive control (matched by media condition): % Inhibition = 100 - [(OD570 sample - blank) / (OD570 positive control - blank) x 100]. No OD600 growth normalization was used for this metric.');
+      bodyText(`Classification thresholds applied — Weak inhibition: >= ${lastCalcParams.tw}%; Moderate inhibition: >= ${lastCalcParams.tm}%; Strong inhibition: >= ${lastCalcParams.ts}%; below the weak threshold, wells were classed No/low inhibition.`);
+    }
+
+    if (tecanMeta.od600 || tecanMeta.od570) {
+      sectionHeading('Instrument & acquisition details');
+      if (useSBF && tecanMeta.od600) {
+        const m = tecanMeta.od600;
+        bodyText(`OD600 file — Device: ${m.device||'—'}    Wavelength: ${m.wavelength||'—'}    Date: ${m.date||'—'}    Time: ${m.time||'—'}    Temp: ${m.temp||'—'}`);
+      }
+      if (tecanMeta.od570) {
+        const m = tecanMeta.od570;
+        bodyText(`OD570 file — Device: ${m.device||'—'}    Wavelength: ${m.wavelength||'—'}    Date: ${m.date||'—'}    Time: ${m.time||'—'}    Temp: ${m.temp||'—'}`);
+      }
+    }
+
+    sectionHeading('Summary statistics');
+    const strains = lastResults.filter(r=>r.rowType==='strain');
+    const cnt=[0,0,0,0];
+    strains.forEach(r=>{ if(r.bi>=0 && r.bi<=3) cnt[r.bi]++; });
+    const catLabels = useSBF
+      ? ['Non-biofilm','Weak biofilm','Moderate biofilm','Strong biofilm']
+      : ['No/low inhibition','Weak inhibition','Moderate inhibition','Strong inhibition'];
+    bodyText(`${entityLabel(true)} analysed: ${strains.length}     Media conditions: ${lastSummary.numMedia}     Blank wells: ${lastSummary.nBlanks}`, 10, RPT.textDark);
+    bodyText(`${catLabels[3]}: ${cnt[3]}     ${catLabels[2]}: ${cnt[2]}     ${catLabels[1]}: ${cnt[1]}     ${catLabels[0]}: ${cnt[0]}`, 10, RPT.textDark);
+    ruleLine();
+
+    sectionHeading(`${useSBF?'SBF Index':'% Inhibition'} by ${entityLabel(false).toLowerCase()} — Figure 1`);
+    await figureBlock('chartCard', `Figure 1. ${useSBF?'SBF Index':'% Inhibition'} per ${entityLabel(false).toLowerCase()}, colour-coded by classification. Dashed lines mark the weak/moderate/strong thresholds.`);
+
+    // ══ TABLE ══
+    // Only start a fresh page if there isn't reasonably enough room left after the
+    // chart — avoids a mostly-blank page when the chart was short (few rows).
+    const TABLE_MIN_ROOM = 45; // mm — enough for the heading + a few table rows
+    if (contentBottom - y < TABLE_MIN_ROOM) {
+      y = newPage();
+    } else {
+      ruleLine();
+    }
+    sectionHeading('Detailed results table — Table 1');
+    const columnsSBF = [
+      {key:'name', header: entityLabel(false)+' / ID', weight:4.4, align:'left', format:r=>r.name},
+      {key:'rowType', header:'Type', weight:2.3, align:'left', format:r=>typeLabel(r.rowType)},
+      {key:'media', header:'Media', weight:2.5, align:'left', format:r=>r.media},
+      {key:'n', header:'n', weight:0.8, align:'center', format:r=>String(r.n)},
+      {key:'m600', header:'Mean OD600', weight:2.2, align:'right', format:r=> r.m600!=null?r.m600.toFixed(3):'—'},
+      {key:'m570', header:'Mean OD570', weight:2.2, align:'right', format:r=> r.m570.toFixed(3)},
+      {key:'bMean600', header:'Blank OD600', weight:2.2, align:'right', format:r=> r.bMean600!=null?r.bMean600.toFixed(3):'—'},
+      {key:'bMean570', header:'Blank OD570', weight:2.2, align:'right', format:r=> r.bMean570.toFixed(3)},
+      {key:'sbf', header:'SBF Index', weight:2.0, align:'right', format:r=> r.sbf!=null?r.sbf.toFixed(3):'—'},
+      {key:'pctInhibition', header:'% Inhib.', weight:2.0, align:'right', format:r=> r.pctInhibition!=null?r.pctInhibition.toFixed(1)+'%':'—'},
+      {key:'cls', header:'Classification', weight:2.8, align:'left', format:r=>r.cls, colorFn:r=>clsColor(r.bi)},
+    ];
+    const columnsABF = [
+      {key:'name', header: entityLabel(false)+' / ID', weight:5.0, align:'left', format:r=>r.name},
+      {key:'rowType', header:'Type', weight:2.6, align:'left', format:r=>typeLabel(r.rowType)},
+      {key:'media', header:'Media', weight:2.8, align:'left', format:r=>r.media},
+      {key:'n', header:'n', weight:0.9, align:'center', format:r=>String(r.n)},
+      {key:'m570', header:'Mean OD570', weight:2.6, align:'right', format:r=> r.m570.toFixed(3)},
+      {key:'bMean570', header:'Blank OD570', weight:2.6, align:'right', format:r=> r.bMean570.toFixed(3)},
+      {key:'pctInhibition', header:'% Inhibition', weight:2.6, align:'right', format:r=> r.pctInhibition!=null?r.pctInhibition.toFixed(1)+'%':'—'},
+      {key:'cls', header:'Classification', weight:3.4, align:'left', format:r=>r.cls, colorFn:r=>clsColor(r.bi)},
+    ];
+    drawTable(useSBF ? columnsSBF : columnsABF, lastResults);
+    y += 4;
+    caption(`Table 1. Per-${entityLabel(false).toLowerCase()} results, blank- and media-matched. n = number of replicate wells averaged.`);
+
+    // ══ HEATMAP ══
+    // Only start a fresh page if there isn't reasonably enough room left on the
+    // table's page — avoids a mostly-blank page when the table finishes early.
+    const HEATMAP_MIN_ROOM = 110; // mm — heatmap figure needs a fair amount of vertical space
+    if (contentBottom - y < HEATMAP_MIN_ROOM) {
+      y = newPage();
+    } else {
+      ruleLine();
+    }
+    sectionHeading('Plate heatmap — Figure 2');
+    await figureBlock('plateResultCard', `Figure 2. 96-well plate layout coloured by classification, with per-well ${useSBF?'SBF index':'% inhibition'} shown.`);
+
+    // ── FOOTER on every page ──
+    const pageCount = pdf.internal.getNumberOfPages();
+    for (let i=1; i<=pageCount; i++) {
+      pdf.setPage(i);
+      pdf.setDrawColor(...RPT.border);
+      pdf.line(margin, pageH - FOOTER_ZONE + 3, pageW - margin, pageH - FOOTER_ZONE + 3);
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(8); pdf.setTextColor(...RPT.textLight);
+      pdf.text('BiofilmQ-HT', margin, pageH - FOOTER_ZONE + 8);
+      pdf.text(`Page ${i} of ${pageCount}`, pageW - margin, pageH - FOOTER_ZONE + 8, {align:'right'});
+    }
+
+    pdf.save(`BiofilmQ-HT_${useSBF?'SBF':'Antibiofilm'}_Report_${new Date().toISOString().slice(0,10)}.pdf`);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = origLabel;
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════════
+function goTo(idx) {
+  document.querySelectorAll('.page').forEach((p,i) => p.classList.toggle('active', i===idx));
+  ['nav0','nav1','nav2'].forEach((id,i) => {
+    const btn = document.getElementById(id);
+    btn.classList.toggle('active', i===idx);
+    btn.disabled = false;
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function startOver() {
+  if (!confirm('Start a new experiment? All current data will be cleared.')) return;
+  wellData = {};
+  grids = {od600:null, od570:null};
+  lastResults = [];
+  if (sbfChart) { sbfChart.destroy(); sbfChart=null; }
+  document.getElementById('st600').innerHTML='';
+  document.getElementById('mt600').innerHTML='';
+  document.getElementById('st570').innerHTML='';
+  document.getElementById('mt570').innerHTML='';
+  document.getElementById('btnCalc').disabled=true;
+  document.getElementById('nav1').disabled=true;
+  document.getElementById('nav2').disabled=true;
+  buildPlate('plateTable');
+  goTo(0);
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+buildPlate('plateTable');
+setMode('sbf');
+</script>
+</body>
+</html>

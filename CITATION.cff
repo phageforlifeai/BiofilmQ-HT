@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "BiofilmQ-HT"
+type: software
+message: "If you use BiofilmQ-HT in research, please cite the software release and the associated manuscript when available."
+authors:
+  - family-names: Joshi
+    given-names: Hiren
+version: "1.0.0"
+date-released: "2026-08-13"
+repository-code: "https://github.com/"
